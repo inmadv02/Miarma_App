@@ -1,0 +1,76 @@
+{
+	"info": {
+		"_postman_id": "df0ba45d-1cf5-4fac-bcfd-d50f086206ce",
+		"name": "Miarma_App",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login/Register",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nickname\" : \"inma_dv\",\r\n    \"avatar\": \"bgfds\",\r\n    \"fullname\" : \"M.ª Inmaculada Domínguez Vargas\",\r\n    \"fechaNacimiento\" : \"2002-05-25\",\r\n    \"email\" : \"inma.dvgs@gmail.com\",\r\n    \"password\" : \"12334\",\r\n    \"password2\" : \"12334\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/auth/register",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nickname\" : \"inma_dv\",\r\n    \"password\" : \"12334\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/auth/login",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
