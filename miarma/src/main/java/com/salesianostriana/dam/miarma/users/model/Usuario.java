@@ -1,5 +1,6 @@
 package com.salesianostriana.dam.miarma.users.model;
 
+import com.salesianostriana.dam.miarma.model.Post;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.NaturalId;
@@ -7,11 +8,11 @@ import org.hibernate.annotations.Parameter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -37,7 +38,7 @@ public class Usuario implements UserDetails {
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    private String nombre, apellidos, nickname;
+    private String fullname, nickname, foto, biografia;
 
     @NaturalId
     @Column(unique = true, updatable = false)
@@ -47,6 +48,28 @@ public class Usuario implements UserDetails {
 
     private Visibilidad visibilidad;
 
+    @ManyToMany(mappedBy = "seguidores", fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<Usuario> siguiendo = new ArrayList<>();;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<Usuario> seguidores = new ArrayList<>();
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<Usuario> quieroSeguirte = new ArrayList<>(); //Son los usuarios que quieren que les acepte el follow
+
+    @ManyToMany(mappedBy = "quieroSeguirte", fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<Usuario> meQuierenSeguir = new ArrayList<>(); //Usuarios que me tienen que aceptar el follow
+
+    @OneToMany(mappedBy = "usuarioPublicacion")
+    @Builder.Default
+    private List<Post> publicaciones = new ArrayList<>();
+
+    private LocalDate fechaNacimiento;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -55,26 +78,26 @@ public class Usuario implements UserDetails {
 
     @Override
     public String getUsername() {
-        return null;
+        return this.nickname;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }
