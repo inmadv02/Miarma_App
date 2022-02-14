@@ -1,5 +1,6 @@
 package com.salesianostriana.dam.miarma.users.services;
 
+import com.salesianostriana.dam.miarma.services.StorageService;
 import com.salesianostriana.dam.miarma.services.base.BaseService;
 import com.salesianostriana.dam.miarma.users.dto.CreateUsuarioDto;
 import com.salesianostriana.dam.miarma.users.model.Usuario;
@@ -10,6 +11,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.UUID;
 
@@ -18,6 +21,7 @@ import java.util.UUID;
 public class UsuarioService extends BaseService<Usuario, UUID, UsuarioRepository> implements UserDetailsService {
 
     private final PasswordEncoder passwordEncoder;
+    private final StorageService storageService;
 
     @Override
     public UserDetails loadUserByUsername(String nickname) throws UsernameNotFoundException {
@@ -25,12 +29,20 @@ public class UsuarioService extends BaseService<Usuario, UUID, UsuarioRepository
                 .orElseThrow(()-> new UsernameNotFoundException(nickname + " no encontrado"));
     }
 
-    public Usuario save(CreateUsuarioDto nuevoUsuario) {
+    public Usuario save(CreateUsuarioDto nuevoUsuario, MultipartFile file) {
 
-            Usuario usuario = Usuario.builder()
+        String fileName = storageService.store(file);
+
+        String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/uploads")
+                .path(fileName)
+                .toUriString();
+
+
+        Usuario usuario = Usuario.builder()
                     .password(passwordEncoder.encode(nuevoUsuario.getPassword()))
                     .fechaNacimiento(nuevoUsuario.getFechaNacimiento())
-                    .foto(nuevoUsuario.getAvatar())
+                    .foto(uri)
                     .fullname(nuevoUsuario.getFullname())
                     .nickname(nuevoUsuario.getNickname())
                     .email(nuevoUsuario.getEmail())

@@ -8,6 +8,7 @@ public class UserDTOConverter {
 
     public GetUsuarioDto convertUserEntityToGetUserDto(Usuario usuario) {
         return GetUsuarioDto.builder()
+                .id(usuario.getId())
                 .nickname(usuario.getNickname())
                 .foto(usuario.getFoto())
                 .descripcion(usuario.getBiografia() == null ? " " : usuario.getBiografia())

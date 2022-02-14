@@ -8,10 +8,8 @@ import com.salesianostriana.dam.miarma.services.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestControllerAdvice
 @RequiredArgsConstructor
@@ -22,9 +20,12 @@ public class PostController {
     private final PostDTOConverter postDTOConverter;
 
     @PostMapping("/")
-    public ResponseEntity<GetPostDTO> createPost(@RequestBody CreatePostDTO createPostDTO){
+    public ResponseEntity<GetPostDTO> createPost(@RequestPart("createPostDTO") CreatePostDTO createPostDTO,
+                                                 @RequestPart("file") MultipartFile file){
 
-        Post nuevoPost = postService.addPost(createPostDTO);
+        Post nuevoPost = postService.addPost(createPostDTO, file);
+
+        postService.save(nuevoPost);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)

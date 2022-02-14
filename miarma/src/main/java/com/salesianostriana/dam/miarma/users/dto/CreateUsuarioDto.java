@@ -2,6 +2,7 @@ package com.salesianostriana.dam.miarma.users.dto;
 
 import com.salesianostriana.dam.miarma.validation.simple.anotaciones.PasswordsMatch;
 import lombok.*;
+import org.hibernate.validator.constraints.URL;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -24,6 +25,7 @@ public class CreateUsuarioDto {
 
     @NotBlank(message = "{campo.not.empty}")
     @NotNull(message = "{campo.not.null}")
+    @URL
     private String avatar;
 
     @NotBlank(message = "{campo.not.empty}")

@@ -9,7 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,13 +22,14 @@ public class UsuarioController {
 
 
     @PostMapping("/auth/register")
-    public ResponseEntity<GetUsuarioDto> nuevoUsuario(@RequestBody CreateUsuarioDto nuevoUsuario) {
-        Usuario usuarioGuardado = usuarioService.save(nuevoUsuario);
+    public ResponseEntity<GetUsuarioDto> nuevoUsuario(@RequestPart CreateUsuarioDto nuevoUsuario,
+                                                      @RequestPart MultipartFile file) {
+        Usuario usuarioGuardado = usuarioService.save(nuevoUsuario, file);
 
-        if (usuarioGuardado == null)
-            return ResponseEntity.badRequest().build();
-        else
+        if (!usuarioGuardado.getNickname().isEmpty())
             return ResponseEntity.ok(userDtoConverter.convertUserEntityToGetUserDto(usuarioGuardado));
+        else
+            return ResponseEntity.badRequest().build();
 
     }
 

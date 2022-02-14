@@ -5,6 +5,7 @@ import com.salesianostriana.dam.miarma.users.model.Usuario;
 import lombok.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -13,6 +14,7 @@ import java.util.List;
 @Builder
 public class GetUsuarioDto {
 
+    private UUID id;
     private String nickname;
     private String descripcion;
     private String foto;

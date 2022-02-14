@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "df0ba45d-1cf5-4fac-bcfd-d50f086206ce",
+		"_postman_id": "25708ad9-aad9-4752-a965-0e3b66fb5bb2",
 		"name": "Miarma_App",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -17,8 +17,21 @@
 						"method": "POST",
 						"header": [],
 						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"nickname\" : \"inma_dv\",\r\n    \"avatar\": \"bgfds\",\r\n    \"fullname\" : \"M.ª Inmaculada Domínguez Vargas\",\r\n    \"fechaNacimiento\" : \"2002-05-25\",\r\n    \"email\" : \"inma.dvgs@gmail.com\",\r\n    \"password\" : \"12334\",\r\n    \"password2\" : \"12334\"\r\n}",
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"contentType": "multipart/form-data",
+									"type": "file",
+									"src": "/C:/Users/dominguez.vamar21/Downloads/b3bc1baf429da3d6509431ea26768d39.jpg"
+								},
+								{
+									"key": "nuevoUsuario",
+									"value": "{\n    \"nickname\" : \"inma_dv\",\n    \"avatar\":  \"\",\n    \"fullname\" : \"M.ª Inmaculada Domínguez Vargas\",\n    \"fechaNacimiento\" : \"2002-05-25\",\n    \"email\" : \"inma.dvgs@gmail.com\",\n    \"password\" : \"12334\",\n    \"password2\" : \"12334\"\n}",
+									"contentType": "application/json",
+									"type": "text"
+								}
+							],
 							"options": {
 								"raw": {
 									"language": "json"
@@ -65,12 +78,85 @@
 							"path": [
 								"auth",
 								"login"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
 							]
 						}
 					},
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Post",
+			"item": [
+				{
+					"name": "Subida publicación",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/dominguez.vamar21/Downloads/dummy.jpeg"
+								},
+								{
+									"key": "createPostDTO",
+									"value": "{\n    \"titulo\" : \"Nuevo lanzamiento de BTS: Stay Alive\",\n    \"texto\": \"Los miembros de la mundialmente conocida banda coreana BTS, Jungkook y Suga, han sacado un nuevo single para su recién salido Webtoon\",\n    \"urlFoto\": \"\",\n    \"visibilidad\": \"Público\"\n}",
+									"type": "text"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/post/",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"post",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjMGE4MzgwMS03ZWY4LTFkZTMtODE3ZS1mODVlMDk2NzAwMDAiLCJpYXQiOjE2NDQ5MzA4MjQsIm5pY2tuYW1lIjoiaW5tYV9kdiJ9.YKyMAfLLgY6Hr1KEwQcaKlxauwPEZjqbUC8RsVQ2pY2HZ0K7iYbxn6QGqX6x5R10U4RGvwc7jgsUCBYSYnZkbQ"
 		}
 	]
 }
