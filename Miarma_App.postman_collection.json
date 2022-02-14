@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "25708ad9-aad9-4752-a965-0e3b66fb5bb2",
+		"_postman_id": "d94a639e-6de3-4f15-b1c9-8d85b2874e53",
 		"name": "Miarma_App",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -28,6 +28,50 @@
 								{
 									"key": "nuevoUsuario",
 									"value": "{\n    \"nickname\" : \"inma_dv\",\n    \"avatar\":  \"\",\n    \"fullname\" : \"M.ª Inmaculada Domínguez Vargas\",\n    \"fechaNacimiento\" : \"2002-05-25\",\n    \"email\" : \"inma.dvgs@gmail.com\",\n    \"password\" : \"12334\",\n    \"password2\" : \"12334\"\n}",
+									"contentType": "application/json",
+									"type": "text"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/auth/register",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register Copy",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"contentType": "multipart/form-data",
+									"type": "file",
+									"src": "/C:/Users/PC/Downloads/Mi Bobo.png"
+								},
+								{
+									"key": "nuevoUsuario",
+									"value": "{\n    \"nickname\" : \"inmadv2\",\n    \"avatar\":  \"\",\n    \"fullname\" : \"M.ª Inmaculada Domínguez\",\n    \"fechaNacimiento\" : \"2002-05-25\",\n    \"email\" : \"inma.dvgs2@gmail.com\",\n    \"password\" : \"123345\",\n    \"password2\" : \"123345\"\n}",
 									"contentType": "application/json",
 									"type": "text"
 								}
@@ -89,6 +133,44 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Login Copy",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nickname\" : \"inmadv2\",\r\n    \"password\" : \"123345\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/auth/login",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"login"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -103,7 +185,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{token}}",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjMGE4MDAxOS03ZWY5LTE1NDEtODE3ZS1mOTc1NjA4YjAwMDAiLCJpYXQiOjE2NDQ5NDkxMjgsIm5pY2tuYW1lIjoiaW5tYWR2MiJ9.GFyaXwFwk6wFtD3lv-G4ycefZbyPQ9MO2lGzWzCrLIru7VbmyWujx-ne_S4LTB4x_eNC51UCgFrc8dQ92G-Ylg",
 									"type": "string"
 								}
 							]
@@ -122,7 +204,7 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/C:/Users/dominguez.vamar21/Downloads/dummy.jpeg"
+									"src": "/C:/Users/PC/Downloads/Mi Bobo.png"
 								},
 								{
 									"key": "createPostDTO",
