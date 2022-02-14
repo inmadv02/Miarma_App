@@ -1,9 +1,10 @@
 package com.salesianostriana.dam.miarma.services;
 
-import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import org.springframework.core.io.Resource;
+
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.stream.Stream;
 
@@ -24,5 +25,5 @@ public interface StorageService {
 
     void deleteAll();
 
-    Resource scaleImage(String filename);
+    MultipartFile scaleImage(String filename, int size) throws IOException;
 }

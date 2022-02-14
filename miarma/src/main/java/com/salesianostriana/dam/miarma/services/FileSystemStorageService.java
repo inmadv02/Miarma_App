@@ -9,20 +9,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-
+import org.springframework.mock.web.MockMultipartFile;
 import javax.annotation.PostConstruct;
 import javax.imageio.ImageIO;
 
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.imgscalr.Scalr;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -138,20 +133,24 @@ public class FileSystemStorageService implements StorageService {
         FileSystemUtils.deleteRecursively(rootLocation.toFile());
     }
 
-    @Override
-    public Resource scaleImage(String filename) throws IOException{
+
+    public MultipartFile scaleImage(String filename, int size) throws IOException{
+
         byte[] byteImg = Files.readAllBytes(Paths.get(filename));
 
         BufferedImage original = ImageIO.read(
                 new ByteArrayInputStream(byteImg)
         );
 
+        BufferedImage scaled = Scalr.resize(original, size);
 
-        BufferedImage scaled = Scalr.resize(original, 512);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(scaled, "png", baos);
+        baos.flush();
 
+        MultipartFile multipartFile = new MockMultipartFile(String.valueOf(scaled), baos.toByteArray());
 
-        OutputStream out = Files.newOutputStream(Paths.get(filename));
+        return multipartFile;
 
-        ImageIO.write(scaled, "jpg", out);
     }
 }

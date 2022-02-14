@@ -17,6 +17,7 @@ public class PostDTOConverter {
 
     public GetPostDTO covertToPostDTO(Post post){
         return GetPostDTO.builder()
+                         .id(post.getPostId())
                          .texto(post.getDescripcion())
                          .urlFoto(post.getUrlFichero())
                          .titulo(post.getTitulo())

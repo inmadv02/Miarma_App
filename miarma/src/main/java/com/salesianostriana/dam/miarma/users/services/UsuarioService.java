@@ -1,5 +1,6 @@
 package com.salesianostriana.dam.miarma.users.services;
 
+import com.salesianostriana.dam.miarma.model.Post;
 import com.salesianostriana.dam.miarma.services.StorageService;
 import com.salesianostriana.dam.miarma.services.base.BaseService;
 import com.salesianostriana.dam.miarma.users.dto.CreateUsuarioDto;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service("userDetailsService")
@@ -49,6 +51,10 @@ public class UsuarioService extends BaseService<Usuario, UUID, UsuarioRepository
                     .build();
             return save(usuario);
 
+    }
+
+    public List<Post> myPosts(Usuario usuario){
+        return usuario.getPublicaciones();
     }
 
 }

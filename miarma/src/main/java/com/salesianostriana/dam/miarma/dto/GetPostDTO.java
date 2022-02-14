@@ -10,6 +10,7 @@ import lombok.*;
 @Builder
 public class GetPostDTO {
 
+    private Long id;
     private String titulo, texto, urlFoto;
     private Visibilidad visibilidad;
 }

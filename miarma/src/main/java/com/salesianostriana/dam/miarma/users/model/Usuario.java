@@ -6,6 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.Parameter;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
@@ -73,7 +74,7 @@ public class Usuario implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return List.of(new SimpleGrantedAuthority("usuarioRegistrado"));
     }
 
     @Override
@@ -99,5 +100,19 @@ public class Usuario implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+
+
+    ////// HELPERS ////
+
+    public void addToPost(Post post){
+        this.getPublicaciones().add(post);
+        post.setUsuarioPublicacion(this);
+    }
+
+    public void removeFromPost(Post post){
+        post.setUsuarioPublicacion(null);
+        this.getPublicaciones().remove(post);
     }
 }
