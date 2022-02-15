@@ -4,6 +4,8 @@ import com.salesianostriana.dam.miarma.model.Post;
 import com.salesianostriana.dam.miarma.users.model.Usuario;
 import lombok.*;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,5 +23,9 @@ public class GetUsuarioDto {
     private List<Post> publicaciones;
     private int numeroSeguidores;
     private int numeroSiguiendo;
+
+    @NotBlank(message = "{campo.not.empty}")
+    @NotNull(message = "{campo.not.null}")
+    private String visibilidad;
 
 }

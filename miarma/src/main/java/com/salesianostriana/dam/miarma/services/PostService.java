@@ -3,6 +3,7 @@ package com.salesianostriana.dam.miarma.services;
 import com.salesianostriana.dam.miarma.dto.post.CreatePostDTO;
 import com.salesianostriana.dam.miarma.dto.post.GetPostDTO;
 import com.salesianostriana.dam.miarma.dto.post.PostDTOConverter;
+import com.salesianostriana.dam.miarma.error.tiposErrores.FileNotFoundException;
 import com.salesianostriana.dam.miarma.model.Post;
 import com.salesianostriana.dam.miarma.error.tiposErrores.EntityNotFoundException;
 import com.salesianostriana.dam.miarma.repository.PostRepository;
@@ -18,6 +19,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +34,7 @@ public class PostService extends BaseService<Post, Long, PostRepository> {
 
         usuario = usuarioRepository.findFirstByNickname(usuario.getNickname()).get();
 
-        storageService.scaleImage(file, 300);
+        storageService.scaleImage(file, 100);
 
         String fileName = storageService.store(file);
 
@@ -85,9 +87,51 @@ public class PostService extends BaseService<Post, Long, PostRepository> {
 
 
     public List<Post> findAllPublicPost(){
-
-        return postRepository.findByVisibilidad(Visibilidad.PUBLIC.getTexto());
+        return postRepository.findByVisibilidad(Visibilidad.PUBLIC);
     }
+
+    public void deletePost(Long id, Usuario usuario){
+
+        usuario = usuarioRepository.findFirstByNickname(usuario.getNickname()).get();
+
+        Optional<Post> postAEliminar = postRepository.findById(id);
+
+        storageService.deleteFile(postAEliminar.get().getUrlFichero());
+        postRepository.deleteById(id);
+
+
+    }
+
+    public Post findOne(Long id, Usuario usuario){
+
+        Optional<Post> post = postRepository.findById(id);
+
+        if(post.get().getVisibilidad().getTexto().equals("Público") ||
+            usuario.getNickname().equals(post.get().getUsuarioPublicacion().getNickname())){
+            return post.get();
+        }
+        else {
+            throw new FileNotFoundException("No se ha podido encontrar este post");
+        }
+    }
+
+    public List<Post> findAllPostOfUser(Usuario usuario, String nick){
+
+        List<Post> posts = postRepository.findByUsuarioNickname(nick);
+        Optional<Usuario> buscado = usuarioRepository.findFirstByNickname(nick);
+
+        if(usuario.getSiguiendo().contains(buscado.get())){
+            return posts;
+        }
+        else {
+            return posts.stream()
+                    .map(p -> {p.getVisibilidad().equals(Visibilidad.PUBLIC);
+                        return p;})
+                    .collect(Collectors.toList());
+        }
+
+    }
+
 
 
 

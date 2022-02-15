@@ -1,5 +1,6 @@
 package com.salesianostriana.dam.miarma.users.dto;
 
+import com.salesianostriana.dam.miarma.users.model.Visibilidad;
 import com.salesianostriana.dam.miarma.validation.simple.anotaciones.PasswordsMatch;
 import lombok.*;
 import org.hibernate.validator.constraints.URL;
@@ -19,33 +20,37 @@ import java.time.LocalDate;
         message = "{passwords.do.not.match}")
 public class CreateUsuarioDto {
 
-    @NotBlank(message = "{campo.not.empty}")
+    @NotBlank(message = "{campo.not.vacio}")
     @NotNull(message = "{campo.not.null}")
     private String nickname;
 
-    @NotBlank(message = "{campo.not.empty}")
+    @NotBlank(message = "{campo.not.vacio}")
     @NotNull(message = "{campo.not.null}")
     @URL
     private String avatar;
 
-    @NotBlank(message = "{campo.not.empty}")
+    @NotBlank(message = "{campo.not.vacio}")
     @NotNull(message = "{campo.not.null}")
     private String fullname;
 
-    @NotBlank(message = "{campo.not.empty}")
+    @NotBlank(message = "{campo.not.vacio}")
     @NotNull(message = "{campo.not.null}")
     private LocalDate fechaNacimiento;
 
-    @NotBlank(message = "{campo.not.empty}")
+    @NotBlank(message = "{campo.not.vacio}")
     @NotNull(message = "{campo.not.null}")
     @Email(message = "{email.format}")
     private String email;
 
-    @NotBlank(message = "{campo.not.empty}")
+    @NotBlank(message = "{campo.not.vacio}")
     @NotNull(message = "{campo.not.null}")
     private String password;
 
-    @NotBlank(message = "{campo.not.empty}")
+    @NotBlank(message = "{campo.not.vacio}")
     @NotNull(message = "{campo.not.null}")
     private String password2;
+
+    @NotBlank(message = "{campo.not.vacio}")
+    @NotNull(message = "{campo.not.null}")
+    private Visibilidad visibilidad;
 }
