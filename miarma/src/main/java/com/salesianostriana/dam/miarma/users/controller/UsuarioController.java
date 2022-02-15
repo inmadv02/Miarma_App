@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
 @RestController
 @RequiredArgsConstructor
 public class UsuarioController {
@@ -23,14 +25,15 @@ public class UsuarioController {
 
     @PostMapping("/auth/register")
     public ResponseEntity<GetUsuarioDto> nuevoUsuario(@RequestPart CreateUsuarioDto nuevoUsuario,
-                                                      @RequestPart MultipartFile file) {
+                                                      @RequestPart MultipartFile file) throws IOException {
         Usuario usuarioGuardado = usuarioService.save(nuevoUsuario, file);
 
-        if (!usuarioGuardado.getNickname().isEmpty())
-            return ResponseEntity.ok(userDtoConverter.convertUserEntityToGetUserDto(usuarioGuardado));
-        else
-            return ResponseEntity.badRequest().build();
+        if (usuarioGuardado == null) {
+           return ResponseEntity.badRequest().build();
 
+        } else {
+            return ResponseEntity.ok(userDtoConverter.convertUserEntityToGetUserDto(usuarioGuardado));
+        }
     }
 
 

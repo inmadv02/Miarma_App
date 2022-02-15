@@ -125,7 +125,7 @@ public class FileSystemStorageService implements StorageService {
 
     @Override
     public void deleteFile(String filename) {
-        // Hazlo marrana
+        // pendiente
     }
 
     @Override
@@ -134,23 +134,25 @@ public class FileSystemStorageService implements StorageService {
     }
 
 
-    public MultipartFile scaleImage(String filename, int size) throws IOException{
+    public MultipartFile scaleImage(MultipartFile file, int size) throws IOException{
 
-        byte[] byteImg = Files.readAllBytes(Paths.get(filename));
 
-        BufferedImage original = ImageIO.read(
-                new ByteArrayInputStream(byteImg)
-        );
+        String filename = StringUtils.cleanPath(file.getOriginalFilename());
+
+        String extension = StringUtils.getFilenameExtension(filename);
+
+        String finalName = filename.replace("."+extension,"");
+
+        BufferedImage original = ImageIO.read(file.getInputStream());
 
         BufferedImage scaled = Scalr.resize(original, size);
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ImageIO.write(scaled, "png", baos);
-        baos.flush();
 
-        MultipartFile multipartFile = new MockMultipartFile(String.valueOf(scaled), baos.toByteArray());
+        ImageIO.write(scaled, extension, baos);
+        //baos.flush();
 
-        return multipartFile;
+        return new MockMultipartFile(finalName, baos.toByteArray());
 
     }
 }

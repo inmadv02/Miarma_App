@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,12 +32,14 @@ public class UsuarioService extends BaseService<Usuario, UUID, UsuarioRepository
                 .orElseThrow(()-> new UsernameNotFoundException(nickname + " no encontrado"));
     }
 
-    public Usuario save(CreateUsuarioDto nuevoUsuario, MultipartFile file) {
+    public Usuario save(CreateUsuarioDto nuevoUsuario, MultipartFile file) throws IOException {
+
+        storageService.scaleImage(file, 300);
 
         String fileName = storageService.store(file);
 
         String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/uploads")
+                .path("/uploads/")
                 .path(fileName)
                 .toUriString();
 
@@ -54,6 +57,9 @@ public class UsuarioService extends BaseService<Usuario, UUID, UsuarioRepository
     }
 
     public List<Post> myPosts(Usuario usuario){
+
+        usuario = repositorio.findFirstByNickname(usuario.getNickname()).get();
+
         return usuario.getPublicaciones();
     }
 

@@ -8,6 +8,7 @@ import com.salesianostriana.dam.miarma.error.tiposErrores.EntityNotFoundExceptio
 import com.salesianostriana.dam.miarma.repository.PostRepository;
 import com.salesianostriana.dam.miarma.services.base.BaseService;
 import com.salesianostriana.dam.miarma.users.model.Usuario;
+import com.salesianostriana.dam.miarma.users.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,15 +25,18 @@ public class PostService extends BaseService<Post, Long, PostRepository> {
     private final PostRepository postRepository;
     private final PostDTOConverter postDTOConverter;
     private final StorageService storageService;
+    private final UsuarioRepository usuarioRepository;
 
     public Post addPost (CreatePostDTO postDTO, MultipartFile file, Usuario usuario) throws IOException {
 
-        storageService.scaleImage(file.getName(), 300);
+        usuario = usuarioRepository.findFirstByNickname(usuario.getNickname()).get();
+
+        storageService.scaleImage(file, 300);
 
         String fileName = storageService.store(file);
 
         String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/uploads")
+                .path("/uploads/")
                 .path(fileName)
                 .toUriString();
 
@@ -40,21 +44,21 @@ public class PostService extends BaseService<Post, Long, PostRepository> {
 
         Post post = postDTOConverter.convertToPost(postDTO);
 
-        postRepository.save(post);
+        post.addToUsuario(usuario);
 
-        usuario.addToPost(post);
+        postRepository.save(post);
 
         return post;
     }
 
     public Post editPost(GetPostDTO postDTO, Long id, MultipartFile file, Usuario usuario) throws IOException{
 
-        storageService.scaleImage(file.getName(), 300);
+        storageService.scaleImage(file, 300);
 
         String fileName = storageService.store(file);
 
         String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/uploads")
+                .path("/uploads/")
                 .path(fileName)
                 .toUriString();
 

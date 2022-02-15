@@ -4,10 +4,7 @@ import com.salesianostriana.dam.miarma.users.model.Usuario;
 import com.salesianostriana.dam.miarma.users.model.Visibilidad;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
@@ -19,7 +16,7 @@ import java.io.Serializable;
 public class Post implements Serializable {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long postId;
 
     private String titulo, descripcion, urlFichero;
@@ -28,4 +25,17 @@ public class Post implements Serializable {
 
     @ManyToOne
     private Usuario usuarioPublicacion;
+
+
+    //// HELPERS ////
+
+    public void addToUsuario(Usuario u){
+        this.usuarioPublicacion = u;
+        u.getPublicaciones().add(this);
+    }
+
+    public void removeFromUsuario(Usuario u){
+        u.getPublicaciones().remove(this);
+        this.usuarioPublicacion = null;
+    }
 }

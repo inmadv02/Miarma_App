@@ -25,5 +25,5 @@ public interface StorageService {
 
     void deleteAll();
 
-    MultipartFile scaleImage(String filename, int size) throws IOException;
+    MultipartFile scaleImage(MultipartFile file, int size) throws IOException;
 }

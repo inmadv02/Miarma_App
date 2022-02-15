@@ -47,6 +47,7 @@ public class Usuario implements UserDetails {
 
     private String password;
 
+    @Enumerated(EnumType.STRING)
     private Visibilidad visibilidad;
 
     @ManyToMany(mappedBy = "seguidores", fetch = FetchType.LAZY)
@@ -79,7 +80,7 @@ public class Usuario implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.nickname;
+        return nickname;
     }
 
     @Override
@@ -106,13 +107,5 @@ public class Usuario implements UserDetails {
 
     ////// HELPERS ////
 
-    public void addToPost(Post post){
-        this.getPublicaciones().add(post);
-        post.setUsuarioPublicacion(this);
-    }
 
-    public void removeFromPost(Post post){
-        post.setUsuarioPublicacion(null);
-        this.getPublicaciones().remove(post);
-    }
 }

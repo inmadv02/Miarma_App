@@ -2,6 +2,10 @@ package com.salesianostriana.dam.miarma.dto;
 
 import com.salesianostriana.dam.miarma.users.model.Visibilidad;
 import lombok.*;
+import org.hibernate.validator.constraints.URL;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
@@ -10,6 +14,16 @@ import lombok.*;
 @Builder
 public class CreatePostDTO {
 
-    private String titulo, texto, urlFoto;
+    @NotBlank(message = "{campo.not.empty}")
+    @NotNull(message = "{campo.not.null}")
+    private String titulo, texto;
+
+    @NotBlank(message = "{campo.not.empty}")
+    @NotNull(message = "{campo.not.null}")
+    @URL(message = "No tiene un formato correcto")
+    private String urlFoto;
+
+    @NotBlank(message = "{campo.not.empty}")
+    @NotNull(message = "{campo.not.null}")
     private Visibilidad visibilidad;
 }

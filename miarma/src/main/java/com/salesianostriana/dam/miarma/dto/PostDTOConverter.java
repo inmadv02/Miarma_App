@@ -1,17 +1,21 @@
 package com.salesianostriana.dam.miarma.dto;
 
 import com.salesianostriana.dam.miarma.model.Post;
+import jdk.jfr.Registered;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class PostDTOConverter {
+
 
     public Post convertToPost(CreatePostDTO createPostDTO){
         return Post.builder()
                     .titulo(createPostDTO.getTitulo())
-                .descripcion(createPostDTO.getTexto())
-                .urlFichero(createPostDTO.getUrlFoto())
-                .visibilidad(createPostDTO.getVisibilidad())
+                    .descripcion(createPostDTO.getTexto())
+                    .urlFichero(createPostDTO.getUrlFoto())
+                    .visibilidad(createPostDTO.getVisibilidad())
                     .build();
     }
 
