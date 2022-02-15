@@ -1,7 +1,6 @@
-package com.salesianostriana.dam.miarma.dto;
+package com.salesianostriana.dam.miarma.dto.post;
 
 import com.salesianostriana.dam.miarma.model.Post;
-import jdk.jfr.Registered;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

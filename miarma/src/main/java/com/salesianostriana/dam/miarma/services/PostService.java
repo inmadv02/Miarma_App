@@ -1,13 +1,14 @@
 package com.salesianostriana.dam.miarma.services;
 
-import com.salesianostriana.dam.miarma.dto.CreatePostDTO;
-import com.salesianostriana.dam.miarma.dto.GetPostDTO;
-import com.salesianostriana.dam.miarma.dto.PostDTOConverter;
+import com.salesianostriana.dam.miarma.dto.post.CreatePostDTO;
+import com.salesianostriana.dam.miarma.dto.post.GetPostDTO;
+import com.salesianostriana.dam.miarma.dto.post.PostDTOConverter;
 import com.salesianostriana.dam.miarma.model.Post;
 import com.salesianostriana.dam.miarma.error.tiposErrores.EntityNotFoundException;
 import com.salesianostriana.dam.miarma.repository.PostRepository;
 import com.salesianostriana.dam.miarma.services.base.BaseService;
 import com.salesianostriana.dam.miarma.users.model.Usuario;
+import com.salesianostriana.dam.miarma.users.model.Visibilidad;
 import com.salesianostriana.dam.miarma.users.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -53,6 +54,8 @@ public class PostService extends BaseService<Post, Long, PostRepository> {
 
     public Post editPost(GetPostDTO postDTO, Long id, MultipartFile file, Usuario usuario) throws IOException{
 
+        usuario = usuarioRepository.findFirstByNickname(usuario.getNickname()).get();
+
         storageService.scaleImage(file, 300);
 
         String fileName = storageService.store(file);
@@ -69,7 +72,7 @@ public class PostService extends BaseService<Post, Long, PostRepository> {
         }
 
         return postOptional.map( post -> {
-                post.setPostId(postDTO.getId());
+
                 post.setTitulo(postDTO.getTitulo());
                 post.setDescripcion(postDTO.getTexto());
                 post.setUrlFichero(uri);
@@ -78,6 +81,12 @@ public class PostService extends BaseService<Post, Long, PostRepository> {
                 return post;
             }).get();
 
+    }
+
+
+    public List<Post> findAllPublicPost(){
+
+        return postRepository.findByVisibilidad(Visibilidad.PUBLIC.getTexto());
     }
 
 

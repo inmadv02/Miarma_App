@@ -1,4 +1,4 @@
-package com.salesianostriana.dam.miarma.dto;
+package com.salesianostriana.dam.miarma.dto.post;
 
 import com.salesianostriana.dam.miarma.users.model.Visibilidad;
 import lombok.*;

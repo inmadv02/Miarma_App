@@ -1,8 +1,8 @@
 package com.salesianostriana.dam.miarma.controller;
 
-import com.salesianostriana.dam.miarma.dto.CreatePostDTO;
-import com.salesianostriana.dam.miarma.dto.GetPostDTO;
-import com.salesianostriana.dam.miarma.dto.PostDTOConverter;
+import com.salesianostriana.dam.miarma.dto.post.CreatePostDTO;
+import com.salesianostriana.dam.miarma.dto.post.GetPostDTO;
+import com.salesianostriana.dam.miarma.dto.post.PostDTOConverter;
 import com.salesianostriana.dam.miarma.model.Post;
 import com.salesianostriana.dam.miarma.services.PostService;
 import com.salesianostriana.dam.miarma.users.model.Usuario;
