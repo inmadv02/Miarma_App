@@ -52,7 +52,7 @@ public class Usuario implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Visibilidad visibilidad;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @Builder.Default
     private List<Usuario> siguiendo = new ArrayList<>();;
 

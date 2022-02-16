@@ -126,9 +126,10 @@ public class PostService extends BaseService<Post, Long, PostRepository> {
     public List<Post> findAllPostOfUser(Usuario usuario, String nick){
 
         Optional<Usuario> buscado = usuarioRepository.findFirstByNickname(nick);
+        List<Usuario> listaSiguiendo = usuarioRepository.publicacionesUsuario(usuario);
 
         if(buscado.isPresent()){
-            if(usuario.getSiguiendo().contains(buscado.get())){
+            if(listaSiguiendo.contains(buscado.get())){
                 return buscado.get().getPublicaciones();
             }
             else {

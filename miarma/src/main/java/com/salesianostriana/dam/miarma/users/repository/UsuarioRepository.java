@@ -14,5 +14,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, UUID> {
 
     Optional<Usuario> findFirstByNickname(String nickname);
 
+    @Query("select u.siguiendo from Usuario u where u= ?1")
+    List<Usuario> publicacionesUsuario(Usuario usuario);
+
 
 }
