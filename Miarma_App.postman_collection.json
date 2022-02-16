@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "eba4ad9c-a9e4-4795-af3a-afbe374f2ba6",
+		"_postman_id": "afc4011e-569c-4dea-b34d-1907821d17f8",
 		"name": "Miarma_App",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -27,7 +27,7 @@
 								},
 								{
 									"key": "nuevoUsuario",
-									"value": "{\n    \"nickname\" : \"inma_dv\",\n    \"avatar\":  \"\",\n    \"fullname\" : \"M.ª Inmaculada Domínguez Vargas\",\n    \"fechaNacimiento\" : \"2002-05-25\",\n    \"email\" : \"inma.dvgs@gmail.com\",\n    \"password\" : \"12334\",\n    \"password2\" : \"12334\"\n}",
+									"value": "{\n    \"nickname\" : \"inma_dv\",\n    \"avatar\":  \"\",\n    \"fullname\" : \"M.ª Inmaculada Domínguez Vargas\",\n    \"fechaNacimiento\" : \"2002-05-25\",\n    \"email\" : \"inma.dvgs@gmail.com\",\n    \"password\" : \"12334\",\n    \"password2\" : \"12334\",\n\"visibilidad\": \"PUBLIC\"\n}",
 									"contentType": "application/json",
 									"type": "text"
 								}
@@ -230,7 +230,7 @@
 									"key": "file",
 									"contentType": "multipart/form-data",
 									"type": "file",
-									"src": "/C:/Users/PC/Downloads/present-06-.jpg"
+									"src": "/C:/Users/dominguez.vamar21/Downloads/dummy.jpeg"
 								},
 								{
 									"key": "createPostDTO",
@@ -246,13 +246,13 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/post/",
+							"raw": "localhost:8080/posts/",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"post",
+								"posts",
 								""
 							]
 						}
@@ -275,13 +275,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/post/me",
+							"raw": "localhost:8080/posts/me",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"post",
+								"posts",
 								"me"
 							]
 						}
@@ -308,25 +308,26 @@
 							"formdata": [
 								{
 									"key": "file",
-									"value": "",
-									"type": "text"
+									"type": "file",
+									"src": "/C:/Users/dominguez.vamar21/Downloads/BTS-2.jpg"
 								},
 								{
 									"key": "post",
-									"value": "",
+									"value": "{\n    \"titulo\" : \"Nuevo lanzamiento de BTS: Stay Alive2\",\n    \"texto\": \"Los miembros de la mundialmente conocida banda coreana BTS, Jungkook y Suga, han sacado un nuevo single para su recién salido Webtoon\",\n    \"urlFoto\": \"\",\n    \"visibilidad\": \"PUBLIC\"\n}",
+									"contentType": "application/json",
 									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "localhost:8080/post/{id}",
+							"raw": "localhost:8080/posts/1",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"post",
-								"{id}"
+								"posts",
+								"1"
 							]
 						}
 					},
@@ -348,13 +349,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/post/public",
+							"raw": "localhost:8080/posts/public",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"post",
+								"posts",
 								"public"
 							]
 						}
@@ -381,13 +382,13 @@
 							"formdata": []
 						},
 						"url": {
-							"raw": "localhost:8080/post/1",
+							"raw": "localhost:8080/posts/1",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"post",
+								"posts",
 								"1"
 							]
 						}
@@ -410,24 +411,50 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/post/2",
+							"raw": "localhost:8080/posts/1",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"post",
-								"2"
+								"posts",
+								"1"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "New Request",
+					"name": "Publicación por nickname",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/posts?nick=inma_dv",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"posts"
+							],
+							"query": [
+								{
+									"key": "nick",
+									"value": "inma_dv"
+								}
+							]
+						}
 					},
 					"response": []
 				}
