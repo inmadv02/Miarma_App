@@ -4,6 +4,7 @@ import com.salesianostriana.dam.miarma.dto.post.CreatePostDTO;
 import com.salesianostriana.dam.miarma.dto.post.GetPostDTO;
 import com.salesianostriana.dam.miarma.dto.post.PostDTOConverter;
 import com.salesianostriana.dam.miarma.error.tiposErrores.FileNotFoundException;
+import com.salesianostriana.dam.miarma.error.tiposErrores.UserNotFoundException;
 import com.salesianostriana.dam.miarma.model.Post;
 import com.salesianostriana.dam.miarma.error.tiposErrores.EntityNotFoundException;
 import com.salesianostriana.dam.miarma.repository.PostRepository;
@@ -74,7 +75,6 @@ public class PostService extends BaseService<Post, Long, PostRepository> {
         }
 
         return postOptional.map( post -> {
-
                 post.setTitulo(postDTO.getTitulo());
                 post.setDescripcion(postDTO.getTexto());
                 post.setUrlFichero(uri);
@@ -96,9 +96,13 @@ public class PostService extends BaseService<Post, Long, PostRepository> {
 
         Optional<Post> postAEliminar = postRepository.findById(id);
 
-        storageService.deleteFile(postAEliminar.get().getUrlFichero());
-        postRepository.deleteById(id);
-
+        if(postAEliminar.isPresent()) {
+            storageService.deleteFile(postAEliminar.get().getUrlFichero());
+            postRepository.deleteById(id);
+        }
+        else {
+            throw new EntityNotFoundException(id, Post.class);
+        }
 
     }
 
@@ -106,28 +110,33 @@ public class PostService extends BaseService<Post, Long, PostRepository> {
 
         Optional<Post> post = postRepository.findById(id);
 
-        if(post.get().getVisibilidad().getTexto().equals("Público") ||
-            usuario.getNickname().equals(post.get().getUsuarioPublicacion().getNickname())){
-            return post.get();
+        if (post.isPresent()) {
+            if (post.get().getVisibilidad().getTexto().equals("Público") ||
+                    usuario.getNickname().equals(post.get().getUsuarioPublicacion().getNickname())) {
+                return post.get();
+            }
         }
         else {
-            throw new FileNotFoundException("No se ha podido encontrar este post");
+            throw new EntityNotFoundException(id, Post.class);
         }
+
+        return null;
     }
 
     public List<Post> findAllPostOfUser(Usuario usuario, String nick){
 
-        List<Post> posts = postRepository.findByUsuarioNickname(nick);
         Optional<Usuario> buscado = usuarioRepository.findFirstByNickname(nick);
 
-        if(usuario.getSiguiendo().contains(buscado.get())){
-            return posts;
+        if(buscado.isPresent()){
+            if(usuario.getSiguiendo().contains(buscado.get())){
+                return buscado.get().getPublicaciones();
+            }
+            else {
+                return postRepository.findByUsuarioPublicacionAndVisibilidad(buscado.get(), Visibilidad.PUBLIC);
+            }
         }
         else {
-            return posts.stream()
-                    .map(p -> {p.getVisibilidad().equals(Visibilidad.PUBLIC);
-                        return p;})
-                    .collect(Collectors.toList());
+            throw new UserNotFoundException(buscado.get().getId(), Usuario.class);
         }
 
     }

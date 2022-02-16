@@ -5,9 +5,7 @@ import com.salesianostriana.dam.miarma.validation.simple.anotaciones.PasswordsMa
 import lombok.*;
 import org.hibernate.validator.constraints.URL;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 
 @Getter
@@ -16,7 +14,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Builder
 @PasswordsMatch(passwordField = "password",
-        verifyPasswordField = "verifyPassword",
+        verifyPasswordField = "password2",
         message = "{passwords.do.not.match}")
 public class CreateUsuarioDto {
 
@@ -24,17 +22,14 @@ public class CreateUsuarioDto {
     @NotNull(message = "{campo.not.null}")
     private String nickname;
 
-    @NotBlank(message = "{campo.not.vacio}")
-    @NotNull(message = "{campo.not.null}")
-    @URL
     private String avatar;
 
     @NotBlank(message = "{campo.not.vacio}")
     @NotNull(message = "{campo.not.null}")
     private String fullname;
 
-    @NotBlank(message = "{campo.not.vacio}")
     @NotNull(message = "{campo.not.null}")
+    @Past
     private LocalDate fechaNacimiento;
 
     @NotBlank(message = "{campo.not.vacio}")
@@ -50,7 +45,6 @@ public class CreateUsuarioDto {
     @NotNull(message = "{campo.not.null}")
     private String password2;
 
-    @NotBlank(message = "{campo.not.vacio}")
     @NotNull(message = "{campo.not.null}")
     private Visibilidad visibilidad;
 }

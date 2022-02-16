@@ -1,5 +1,6 @@
 package com.salesianostriana.dam.miarma.users.model;
 
+import com.salesianostriana.dam.miarma.model.FollowRequest;
 import com.salesianostriana.dam.miarma.model.Post;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+
 
 @Entity
 @Getter
@@ -50,21 +52,17 @@ public class Usuario implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Visibilidad visibilidad;
 
-    @ManyToMany(mappedBy = "seguidores", fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @Builder.Default
     private List<Usuario> siguiendo = new ArrayList<>();;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "siguiendo")
     @Builder.Default
     private List<Usuario> seguidores = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "quiereSeguir", fetch = FetchType.LAZY)
     @Builder.Default
-    private List<Usuario> quieroSeguirte = new ArrayList<>(); //Son los usuarios que quieren que les acepte el follow
-
-    @ManyToMany(mappedBy = "quieroSeguirte", fetch = FetchType.LAZY)
-    @Builder.Default
-    private List<Usuario> meQuierenSeguir = new ArrayList<>(); //Usuarios que me tienen que aceptar el follow
+    private List<FollowRequest> followRequests = new ArrayList<>(); //Usuarios a los que hay que aceptar la solicitud de seguimiento
 
     @OneToMany(mappedBy = "usuarioPublicacion")
     @Builder.Default
@@ -104,8 +102,6 @@ public class Usuario implements UserDetails {
     }
 
 
-
-    ////// HELPERS ////
 
 
 }

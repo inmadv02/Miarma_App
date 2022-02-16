@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.io.IOException;
 
 @RestController
@@ -24,7 +25,7 @@ public class UsuarioController {
 
 
     @PostMapping("/auth/register")
-    public ResponseEntity<GetUsuarioDto> nuevoUsuario(@RequestPart CreateUsuarioDto nuevoUsuario,
+    public ResponseEntity<GetUsuarioDto> nuevoUsuario(@Valid @RequestPart CreateUsuarioDto nuevoUsuario,
                                                       @RequestPart MultipartFile file) throws IOException {
         Usuario usuarioGuardado = usuarioService.save(nuevoUsuario, file);
 

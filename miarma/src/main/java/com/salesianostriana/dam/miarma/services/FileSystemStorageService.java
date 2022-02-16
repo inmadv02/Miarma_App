@@ -144,7 +144,6 @@ public class FileSystemStorageService implements StorageService {
 
     public MultipartFile scaleImage(MultipartFile file, int size) throws IOException{
 
-
         String filename = StringUtils.cleanPath(file.getOriginalFilename());
 
         String extension = StringUtils.getFilenameExtension(filename);

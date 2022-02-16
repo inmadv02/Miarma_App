@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 @RestControllerAdvice
 @RequiredArgsConstructor
-@RequestMapping("/post")
+@RequestMapping("/posts")
 public class PostController {
 
     private final PostService postService;
@@ -79,7 +79,7 @@ public class PostController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deletePost(@PathVariable Long id, @AuthenticationPrincipal Usuario usuario){
+    public ResponseEntity<?> deletePost(@PathVariable("id") Long id, @AuthenticationPrincipal Usuario usuario){
 
         postService.deletePost(id, usuario);
 
@@ -87,7 +87,7 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<GetPostDTO> findPostOfUser(@PathVariable Long id, @AuthenticationPrincipal Usuario usuario){
+    public ResponseEntity<GetPostDTO> postsPorId(@PathVariable("id") Long id, @AuthenticationPrincipal Usuario usuario){
 
         Post post = postService.findOne(id, usuario);
 
@@ -99,8 +99,8 @@ public class PostController {
         }
     }
 
-    @GetMapping("/{nick}")
-    public ResponseEntity<List<GetPostDTO>> findPostsByNick(@PathVariable String nick,
+    @GetMapping
+    public ResponseEntity<List<GetPostDTO>> postsPorNick(@RequestParam("nick") String nick,
                                                             @AuthenticationPrincipal Usuario usuario){
 
         List<GetPostDTO> getPostDTOList = postService.findAllPostOfUser(usuario, nick)
