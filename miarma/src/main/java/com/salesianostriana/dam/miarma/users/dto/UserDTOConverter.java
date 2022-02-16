@@ -21,5 +21,21 @@ public class UserDTOConverter {
 
     }
 
+    public GetUsuarioMoreDetailsDTO convertUserEntityToGetUserMoreDetailsDto(Usuario usuario) {
+        return GetUsuarioMoreDetailsDTO.builder()
+                .id(usuario.getId())
+                .nickname(usuario.getNickname())
+                .nombre(usuario.getFullname())
+                .foto(usuario.getFoto())
+                .descripcion(usuario.getBiografia() == null ? " " : usuario.getBiografia())
+                .visibilidad(usuario.getVisibilidad())
+                .fechaNacimiento(usuario.getFechaNacimiento())
+                .email(usuario.getEmail())
+                .password(usuario.getPassword())
+                .build();
+
+
+    }
+
 
 }

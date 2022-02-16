@@ -1,9 +1,12 @@
 package com.salesianostriana.dam.miarma.users.services;
 
 import com.salesianostriana.dam.miarma.model.Post;
+import com.salesianostriana.dam.miarma.services.PostService;
 import com.salesianostriana.dam.miarma.services.StorageService;
 import com.salesianostriana.dam.miarma.services.base.BaseService;
 import com.salesianostriana.dam.miarma.users.dto.CreateUsuarioDto;
+import com.salesianostriana.dam.miarma.users.dto.GetUsuarioDto;
+import com.salesianostriana.dam.miarma.users.dto.GetUsuarioMoreDetailsDTO;
 import com.salesianostriana.dam.miarma.users.model.Usuario;
 import com.salesianostriana.dam.miarma.users.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +28,8 @@ public class UsuarioService extends BaseService<Usuario, UUID, UsuarioRepository
 
     private final PasswordEncoder passwordEncoder;
     private final StorageService storageService;
+
+    PostService postService;
 
     @Override
     public UserDetails loadUserByUsername(String nickname) throws UsernameNotFoundException {
@@ -62,6 +67,28 @@ public class UsuarioService extends BaseService<Usuario, UUID, UsuarioRepository
         usuario = repositorio.findFirstByNickname(usuario.getNickname()).get();
 
         return usuario.getPublicaciones();
+    }
+
+
+    public Usuario editProfile(Usuario usuario, GetUsuarioMoreDetailsDTO usuarioDto, MultipartFile file) throws IOException {
+
+        String uri = postService.uploadFiles(file);
+
+        usuario.setNickname(usuarioDto.getNickname());
+        usuario.setFullname(usuarioDto.getNombre());
+        usuario.setEmail(usuarioDto.getEmail());
+        usuario.setFechaNacimiento(usuarioDto.getFechaNacimiento());
+
+        storageService.deleteFile(usuario.getFoto());
+
+        usuario.setFoto(uri);
+        usuario.setVisibilidad(usuarioDto.getVisibilidad());
+        usuario.setPassword(passwordEncoder.encode(usuarioDto.getPassword()));
+
+        repositorio.save(usuario);
+
+        return usuario;
+
     }
 
 }

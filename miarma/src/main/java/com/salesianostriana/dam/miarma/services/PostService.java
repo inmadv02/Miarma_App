@@ -31,10 +31,7 @@ public class PostService extends BaseService<Post, Long, PostRepository> {
     private final StorageService storageService;
     private final UsuarioRepository usuarioRepository;
 
-    public Post addPost (CreatePostDTO postDTO, MultipartFile file, Usuario usuario) throws IOException {
-
-        usuario = usuarioRepository.findFirstByNickname(usuario.getNickname()).get();
-
+    public String uploadFiles(MultipartFile file) throws IOException {
         storageService.scaleImage(file, 100);
 
         String fileName = storageService.store(file);
@@ -43,6 +40,15 @@ public class PostService extends BaseService<Post, Long, PostRepository> {
                 .path("/uploads/")
                 .path(fileName)
                 .toUriString();
+
+        return uri;
+    }
+
+    public Post addPost (CreatePostDTO postDTO, MultipartFile file, Usuario usuario) throws IOException {
+
+        usuario = usuarioRepository.findFirstByNickname(usuario.getNickname()).get();
+
+        String uri = uploadFiles(file);
 
         postDTO.setUrlFoto(uri);
 
@@ -59,14 +65,7 @@ public class PostService extends BaseService<Post, Long, PostRepository> {
 
         usuario = usuarioRepository.findFirstByNickname(usuario.getNickname()).get();
 
-        storageService.scaleImage(file, 300);
-
-        String fileName = storageService.store(file);
-
-        String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/uploads/")
-                .path(fileName)
-                .toUriString();
+        String uri = uploadFiles(file);
 
         Optional<Post> postOptional = postRepository.findById(id);
 
@@ -77,6 +76,7 @@ public class PostService extends BaseService<Post, Long, PostRepository> {
         return postOptional.map( post -> {
                 post.setTitulo(postDTO.getTitulo());
                 post.setDescripcion(postDTO.getTexto());
+                storageService.deleteFile(post.getUrlFichero());
                 post.setUrlFichero(uri);
                 post.setVisibilidad(postDTO.getVisibilidad());
                 postRepository.save(post);

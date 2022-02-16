@@ -2,15 +2,14 @@ package com.salesianostriana.dam.miarma.users.controller;
 
 import com.salesianostriana.dam.miarma.users.dto.CreateUsuarioDto;
 import com.salesianostriana.dam.miarma.users.dto.GetUsuarioDto;
+import com.salesianostriana.dam.miarma.users.dto.GetUsuarioMoreDetailsDTO;
 import com.salesianostriana.dam.miarma.users.dto.UserDTOConverter;
 import com.salesianostriana.dam.miarma.users.model.Usuario;
 import com.salesianostriana.dam.miarma.users.services.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
@@ -35,6 +34,17 @@ public class UsuarioController {
         } else {
             return ResponseEntity.ok(userDtoConverter.convertUserEntityToGetUserDto(usuarioGuardado));
         }
+    }
+
+    @PutMapping("/profile/me")
+    public ResponseEntity<GetUsuarioMoreDetailsDTO> editProfile(@Valid GetUsuarioMoreDetailsDTO dto,
+                                                                @RequestPart MultipartFile file,
+                                                                @AuthenticationPrincipal Usuario usuario) throws IOException {
+
+        Usuario editado = usuarioService.editProfile(usuario, dto, file);
+
+        return ResponseEntity.ok(userDtoConverter.convertUserEntityToGetUserMoreDetailsDto(editado));
+
     }
 
 

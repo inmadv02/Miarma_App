@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "afc4011e-569c-4dea-b34d-1907821d17f8",
+		"_postman_id": "192a96f4-10f5-416c-8a97-b3da44fb6921",
 		"name": "Miarma_App",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -309,7 +309,7 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/C:/Users/dominguez.vamar21/Downloads/BTS-2.jpg"
+									"src": "/C:/Users/PC/Downloads/present-06-.jpg"
 								},
 								{
 									"key": "post",
@@ -440,7 +440,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/posts?nick=inma_dv",
+							"raw": "localhost:8080/posts?nick=inmadv2",
 							"host": [
 								"localhost"
 							],
@@ -451,7 +451,7 @@
 							"query": [
 								{
 									"key": "nick",
-									"value": "inma_dv"
+									"value": "inmadv2"
 								}
 							]
 						}
