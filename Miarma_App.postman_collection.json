@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "afc4011e-569c-4dea-b34d-1907821d17f8",
+		"_postman_id": "a421a560-3cc7-40c0-a6ba-7eba95af62af",
 		"name": "Miarma_App",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -53,7 +53,7 @@
 					"response": []
 				},
 				{
-					"name": "Register Copy",
+					"name": "Register Usuario 2",
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -67,7 +67,7 @@
 									"key": "file",
 									"contentType": "multipart/form-data",
 									"type": "file",
-									"src": "/C:/Users/dominguez.vamar21/Downloads/09n.png"
+									"src": "/C:/Users/PC/Downloads/4c64fd9f482665f7b9cb4143d45df517.jpg"
 								},
 								{
 									"key": "nuevoUsuario",
@@ -147,7 +147,7 @@
 					"response": []
 				},
 				{
-					"name": "Login Copy",
+					"name": "Login Usuario 2",
 					"event": [
 						{
 							"listen": "test",
@@ -195,6 +195,34 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Login Usuario Demo",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nickname\" : \"se_como_jose\",\r\n    \"password\" : \"09876\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/auth/login",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -230,11 +258,69 @@
 									"key": "file",
 									"contentType": "multipart/form-data",
 									"type": "file",
-									"src": "/C:/Users/dominguez.vamar21/Downloads/dummy.jpeg"
+									"src": "/C:/Users/PC/Downloads/5829268001_1_1_2.jpg"
 								},
 								{
 									"key": "createPostDTO",
-									"value": "{\n    \"titulo\" : \"Nuevo lanzamiento de BTS: Stay Alive2\",\n    \"texto\": \"Los miembros de la mundialmente conocida banda coreana BTS, Jungkook y Suga, han sacado un nuevo single para su recién salido Webtoon\",\n    \"urlFoto\": \"\",\n    \"visibilidad\": \"PRIVATE\"\n}",
+									"value": "{\n    \"titulo\" : \"Nuevo lanzamiento de BTS: Stay Alive\",\n    \"texto\": \"Los miembros de la mundialmente conocida banda coreana BTS, Jungkook y Suga, han sacado un nuevo single para su recién salido Webtoon\",\n    \"urlFoto\": \"\",\n    \"visibilidad\": \"PRIVATE\"\n}",
+									"contentType": "application/json",
+									"type": "text"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/posts/",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"posts",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Subida publicación (vídeo)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjMGE4MzgwMS03ZWZjLTE4OGEtODE3ZS1mYzU4ZWYxMDAwMDAiLCJpYXQiOjE2NDQ5OTc1OTgsIm5pY2tuYW1lIjoiaW5tYV9kdiJ9.irvo2lSzaoCE9mKX-0B-StidZDFRIi7_3ZWsO7xyMKQ0MuaZ-QOn-vjplmUxCpi84ML3-i7sZaC9stXqJKQoyQ",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"contentType": "multipart/form-data",
+									"type": "file",
+									"src": "/C:/Users/PC/Downloads/video de 1 segundo.mp4"
+								},
+								{
+									"key": "createPostDTO",
+									"value": "{\n    \"titulo\" : \"Nuevo lanzamiento de BTS: Stay Alive\",\n    \"texto\": \"Los miembros de la mundialmente conocida banda coreana BTS, Jungkook y Suga, han sacado un nuevo single para su recién salido Webtoon\",\n    \"urlFoto\": \"\",\n    \"visibilidad\": \"PUBLIC\"\n}",
 									"contentType": "application/json",
 									"type": "text"
 								}
@@ -382,14 +468,14 @@
 							"formdata": []
 						},
 						"url": {
-							"raw": "localhost:8080/posts/2",
+							"raw": "localhost:8080/posts/1",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"posts",
-								"2"
+								"1"
 							]
 						}
 					},

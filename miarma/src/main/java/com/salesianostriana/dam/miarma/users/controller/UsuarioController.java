@@ -6,6 +6,8 @@ import com.salesianostriana.dam.miarma.users.dto.GetUsuarioMoreDetailsDTO;
 import com.salesianostriana.dam.miarma.users.dto.UserDTOConverter;
 import com.salesianostriana.dam.miarma.users.model.Usuario;
 import com.salesianostriana.dam.miarma.users.services.UsuarioService;
+import io.github.techgnious.exception.ImageException;
+import io.github.techgnious.exception.VideoException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,7 +27,7 @@ public class UsuarioController {
 
     @PostMapping("/auth/register")
     public ResponseEntity<GetUsuarioDto> nuevoUsuario(@Valid @RequestPart CreateUsuarioDto nuevoUsuario,
-                                                      @RequestPart MultipartFile file) throws IOException {
+                                                      @RequestPart MultipartFile file) throws IOException, ImageException {
         Usuario usuarioGuardado = usuarioService.save(nuevoUsuario, file);
 
         if (usuarioGuardado == null) {
@@ -39,7 +41,7 @@ public class UsuarioController {
     @PutMapping("/profile/me")
     public ResponseEntity<GetUsuarioMoreDetailsDTO> editProfile(@Valid @RequestPart GetUsuarioMoreDetailsDTO dto,
                                                                 @RequestPart MultipartFile file,
-                                                                @AuthenticationPrincipal Usuario usuario) throws IOException {
+                                                                @AuthenticationPrincipal Usuario usuario) throws IOException, VideoException {
 
         Usuario editado = usuarioService.editProfile(usuario, dto, file);
 

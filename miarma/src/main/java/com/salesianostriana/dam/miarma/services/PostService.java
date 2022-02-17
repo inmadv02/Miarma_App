@@ -12,6 +12,8 @@ import com.salesianostriana.dam.miarma.services.base.BaseService;
 import com.salesianostriana.dam.miarma.users.model.Usuario;
 import com.salesianostriana.dam.miarma.users.model.Visibilidad;
 import com.salesianostriana.dam.miarma.users.repository.UsuarioRepository;
+import io.github.techgnious.exception.ImageException;
+import io.github.techgnious.exception.VideoException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,6 +21,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -31,13 +34,28 @@ public class PostService extends BaseService<Post, Long, PostRepository> {
     private final StorageService storageService;
     private final UsuarioRepository usuarioRepository;
 
-    public String uploadFiles(MultipartFile file) throws IOException {
+    public String uploadFiles(MultipartFile file) throws IOException, VideoException {
 
-        MultipartFile newFile = storageService.scaleImage(file, 100);
+        if(Objects.equals(file.getContentType(), "video/mp4")){
+            String videoEscalado = storageService.scaleVideo(file);
+            String videoNormal = storageService.store(file);
 
-        String fileName = storageService.store(newFile);
+            String uriV = ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path("/uploads/")
+                    .path(videoNormal)
+                    .toUriString();
+            return uriV;
+        }
+
+        String imagenEscalada = storageService.scaleImage(file, 1024);
+        String fileName = storageService.store(file);
 
         String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/uploads/")
+                .path(imagenEscalada)
+                .toUriString();
+
+        String uriOriginal = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/uploads/")
                 .path(fileName)
                 .toUriString();
@@ -45,29 +63,24 @@ public class PostService extends BaseService<Post, Long, PostRepository> {
         return uri;
     }
 
-    public Post addPost (CreatePostDTO postDTO, MultipartFile file, Usuario usuario) throws IOException {
+    public Post addPost (CreatePostDTO postDTO, MultipartFile file, Usuario usuario) throws IOException, VideoException {
 
         usuario = usuarioRepository.findFirstByNickname(usuario.getNickname()).get();
 
         String uri = uploadFiles(file);
-
         postDTO.setUrlFoto(uri);
 
         Post post = postDTOConverter.convertToPost(postDTO);
-
         post.addToUsuario(usuario);
-
         postRepository.save(post);
 
         return post;
     }
 
-    public Post editPost(GetPostDTO postDTO, Long id, MultipartFile file, Usuario usuario) throws IOException{
+    public Post editPost(GetPostDTO postDTO, Long id, MultipartFile file, Usuario usuario) throws IOException, VideoException {
 
         usuario = usuarioRepository.findFirstByNickname(usuario.getNickname()).get();
-
         String uri = uploadFiles(file);
-
         Optional<Post> postOptional = postRepository.findById(id);
 
         if (postOptional.isEmpty()){
@@ -94,7 +107,6 @@ public class PostService extends BaseService<Post, Long, PostRepository> {
     public void deletePost(Long id, Usuario usuario){
 
         usuario = usuarioRepository.findFirstByNickname(usuario.getNickname()).get();
-
         Optional<Post> postAEliminar = postRepository.findById(id);
 
         if(postAEliminar.isPresent()) {

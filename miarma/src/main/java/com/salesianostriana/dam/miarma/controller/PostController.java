@@ -8,6 +8,8 @@ import com.salesianostriana.dam.miarma.services.PostService;
 import com.salesianostriana.dam.miarma.users.model.Usuario;
 import com.salesianostriana.dam.miarma.users.model.Visibilidad;
 import com.salesianostriana.dam.miarma.users.services.UsuarioService;
+import io.github.techgnious.exception.ImageException;
+import io.github.techgnious.exception.VideoException;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
@@ -33,7 +35,7 @@ public class PostController {
     @PostMapping("/")
     public ResponseEntity<GetPostDTO> createPost(@Valid @RequestPart("createPostDTO") CreatePostDTO createPostDTO,
                                                  @RequestPart("file") MultipartFile file,
-                                                 @AuthenticationPrincipal Usuario usuario) throws IOException {
+                                                 @AuthenticationPrincipal Usuario usuario) throws IOException, VideoException {
 
         Post nuevoPost = postService.addPost(createPostDTO, file, usuario);
 
@@ -48,7 +50,7 @@ public class PostController {
     public ResponseEntity<GetPostDTO> changePost(@Valid @RequestPart("post") GetPostDTO post,
                                                  @RequestPart("file") MultipartFile file,
                                                  @AuthenticationPrincipal Usuario usuario,
-                                                 @PathVariable Long id) throws IOException {
+                                                 @PathVariable Long id) throws IOException, VideoException {
 
         Post postEditado = postService.editPost(post, id, file, usuario);
 

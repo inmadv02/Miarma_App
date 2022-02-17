@@ -4,6 +4,13 @@ import com.salesianostriana.dam.miarma.config.StorageProperties;
 import com.salesianostriana.dam.miarma.error.tiposErrores.FileNotFoundException;
 import com.salesianostriana.dam.miarma.error.tiposErrores.StorageException;
 import com.salesianostriana.dam.miarma.utils.MediaTypeUrlResource;
+import io.github.techgnious.IVCompressor;
+import io.github.techgnious.dto.IVSize;
+import io.github.techgnious.dto.ImageFormats;
+import io.github.techgnious.dto.ResizeResolution;
+import io.github.techgnious.dto.VideoFormats;
+import io.github.techgnious.exception.ImageException;
+import io.github.techgnious.exception.VideoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
@@ -48,42 +55,30 @@ public class FileSystemStorageService implements StorageService {
 
     }
 
+
+
     @Override
     public String store(MultipartFile file) {
 
         String filename = StringUtils.cleanPath(file.getOriginalFilename());
-        String newFilename = "";
 
         try {
-
             if (file.isEmpty())
-                throw new StorageException("El fichero que ha subido está vacío");
+                throw new StorageException("El fichero que has subido está vacío");
 
-            newFilename = filename;
-
-            while(Files.exists(rootLocation.resolve(newFilename))) {
-
-                String extension = StringUtils.getFilenameExtension(newFilename);
-                String name = newFilename.replace("."+extension,"");
-
-                String suffix = Long.toString(System.currentTimeMillis());
-                suffix = suffix.substring(suffix.length()-6);
-
-                newFilename = name + "_" + suffix + "." + extension;
-
-            }
+            createNameForFile(file);
 
             try (InputStream inputStream = file.getInputStream()) {
-                Files.copy(inputStream, rootLocation.resolve(newFilename),
+                Files.copy(inputStream, rootLocation.resolve(filename),
                         StandardCopyOption.REPLACE_EXISTING);
             }
 
 
         } catch (IOException exception) {
-            throw new StorageException("Error en el almacenamiento del fichero: " + newFilename, exception);
+            throw new StorageException("Error en el almacenamiento del siguiente fichero: " + filename, exception);
         }
 
-        return newFilename;
+        return filename;
 
     }
 
@@ -135,31 +130,57 @@ public class FileSystemStorageService implements StorageService {
 
     }
 
-
     @Override
     public void deleteAll() {
         FileSystemUtils.deleteRecursively(rootLocation.toFile());
     }
 
-
-    public MultipartFile scaleImage(MultipartFile file, int size) throws IOException{
+    @Override
+    public String createNameForFile(MultipartFile file) {
 
         String filename = StringUtils.cleanPath(file.getOriginalFilename());
 
+        while(Files.exists(rootLocation.resolve(filename))) {
+
+            String extension = StringUtils.getFilenameExtension(filename);
+            String name = filename.replace("."+extension,"");
+
+            String suffix = Double.toString(Math.floor(Math.random()*(1000000000-1)*1));
+
+            filename = name + "_" + suffix + "." + extension;
+
+        }
+        return filename;
+    }
+
+
+    public String scaleImage(MultipartFile file, int size) throws IOException {
+
+        String filename = createNameForFile(file);
         String extension = StringUtils.getFilenameExtension(filename);
 
-        String finalName = filename.replace("."+extension,"");
-
         BufferedImage original = ImageIO.read(file.getInputStream());
+        BufferedImage scaledImage = Scalr.resize(original, size);
 
-        BufferedImage scaled = Scalr.resize(original, size);
+        OutputStream outputStream = Files.newOutputStream(Paths.get("uploads/" + filename));
+        ImageIO.write(scaledImage, extension, outputStream);
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        return filename;
 
-        ImageIO.write(scaled, extension, baos);
-        //baos.flush();
+    }
 
-        return new MockMultipartFile(finalName, baos.toByteArray());
+    public String scaleVideo(MultipartFile file) throws IOException, VideoException {
+
+        String filename = createNameForFile(file);
+        String extension = StringUtils.getFilenameExtension(filename);
+
+        IVCompressor compressor = new IVCompressor();
+
+        byte[] scaledVideo = compressor.reduceVideoSize(file.getBytes(), VideoFormats.MP4, ResizeResolution.R360P);
+
+        Files.write(Paths.get("uploads/" + filename), scaledVideo);
+
+        return filename;
 
     }
 }

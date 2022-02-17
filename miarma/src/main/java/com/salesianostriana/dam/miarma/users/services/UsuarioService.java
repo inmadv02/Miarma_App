@@ -9,6 +9,8 @@ import com.salesianostriana.dam.miarma.users.dto.GetUsuarioDto;
 import com.salesianostriana.dam.miarma.users.dto.GetUsuarioMoreDetailsDTO;
 import com.salesianostriana.dam.miarma.users.model.Usuario;
 import com.salesianostriana.dam.miarma.users.repository.UsuarioRepository;
+import io.github.techgnious.exception.ImageException;
+import io.github.techgnious.exception.VideoException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -37,15 +39,13 @@ public class UsuarioService extends BaseService<Usuario, UUID, UsuarioRepository
                 .orElseThrow(()-> new UsernameNotFoundException(nickname + " no encontrado"));
     }
 
-    public Usuario save(CreateUsuarioDto nuevoUsuario, MultipartFile file) throws IOException {
+    public Usuario save(CreateUsuarioDto nuevoUsuario, MultipartFile file) throws IOException, ImageException {
 
-        storageService.scaleImage(file, 300);
-
-        String fileName = storageService.store(file);
+        String imagenEscalada = storageService.scaleImage(file, 124);
 
         String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/uploads/")
-                .path(fileName)
+                .path(imagenEscalada)
                 .toUriString();
 
 
@@ -70,7 +70,7 @@ public class UsuarioService extends BaseService<Usuario, UUID, UsuarioRepository
     }
 
 
-    public Usuario editProfile(Usuario usuario, GetUsuarioMoreDetailsDTO usuarioDto, MultipartFile file) throws IOException {
+    public Usuario editProfile(Usuario usuario, GetUsuarioMoreDetailsDTO usuarioDto, MultipartFile file) throws IOException, VideoException {
 
         storageService.deleteFile(usuario.getFoto());
         String uri = postService.uploadFiles(file);
