@@ -37,7 +37,6 @@ public class GetUsuarioMoreDetailsDTO {
 
     private String foto;
 
-    @NotBlank(message = "{campo.not.vacio}")
     @NotNull(message = "{campo.not.null}")
     private LocalDate fechaNacimiento;
 

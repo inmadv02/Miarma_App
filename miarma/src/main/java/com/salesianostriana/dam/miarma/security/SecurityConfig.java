@@ -49,24 +49,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-                .exceptionHandling()
-                .authenticationEntryPoint(authenticationEntryPoint)
-                .accessDeniedHandler(accessDeniedHandler)
+                    .exceptionHandling()
+                    .authenticationEntryPoint(authenticationEntryPoint)
+                    .accessDeniedHandler(accessDeniedHandler)
                 .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                    .sessionManagement()
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
                 .and()
-                .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/auth/**").anonymous()
-                .antMatchers(HttpMethod.POST, "/posts**").authenticated()
-                .antMatchers("/h2-console/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+                    .authorizeRequests()
+                        .antMatchers(HttpMethod.POST, "/auth/**").anonymous()
+                        .antMatchers(HttpMethod.POST, "/posts**").authenticated()
+                        .antMatchers(HttpMethod.GET, "/posts**").authenticated()
+                        .antMatchers(HttpMethod.PUT, "/posts**").authenticated()
+                        .antMatchers(HttpMethod.DELETE, "/posts**").authenticated()
+                        .antMatchers(HttpMethod.POST, "/follow**").authenticated()
+                        .antMatchers("/h2-console/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                 .anyRequest().authenticated();
 
 
         http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
 
-        // Para dar acceso a h2
         http.headers().frameOptions().disable();
 
 

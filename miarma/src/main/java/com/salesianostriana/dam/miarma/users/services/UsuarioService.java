@@ -29,7 +29,7 @@ public class UsuarioService extends BaseService<Usuario, UUID, UsuarioRepository
     private final PasswordEncoder passwordEncoder;
     private final StorageService storageService;
 
-    PostService postService;
+    private final PostService postService;
 
     @Override
     public UserDetails loadUserByUsername(String nickname) throws UsernameNotFoundException {
@@ -72,18 +72,19 @@ public class UsuarioService extends BaseService<Usuario, UUID, UsuarioRepository
 
     public Usuario editProfile(Usuario usuario, GetUsuarioMoreDetailsDTO usuarioDto, MultipartFile file) throws IOException {
 
+        storageService.deleteFile(usuario.getFoto());
         String uri = postService.uploadFiles(file);
 
         usuario.setNickname(usuarioDto.getNickname());
         usuario.setFullname(usuarioDto.getNombre());
         usuario.setEmail(usuarioDto.getEmail());
+        usuario.setBiografia(usuarioDto.getDescripcion());
         usuario.setFechaNacimiento(usuarioDto.getFechaNacimiento());
-
-        storageService.deleteFile(usuario.getFoto());
-
         usuario.setFoto(uri);
         usuario.setVisibilidad(usuarioDto.getVisibilidad());
-        usuario.setPassword(passwordEncoder.encode(usuarioDto.getPassword()));
+        usuario.setPassword(usuarioDto.getPassword());
+
+        passwordEncoder.encode(usuarioDto.getPassword());
 
         repositorio.save(usuario);
 

@@ -28,5 +28,21 @@ public class FollowRequest {
     private Usuario acepta;
 
 
+    private String mensaje;
+
+
+    ///// HELPERS /////
+
+    public void addToUsuario(Usuario usuario){
+        this.acepta = usuario;
+        usuario.getFollowRequests().add(this);
+    }
+
+    public void addToUsuario2(Usuario usuario){
+        this.quiereSeguir = usuario;
+        usuario.getFollowRequests().add(this);
+    }
+
+
 
 }

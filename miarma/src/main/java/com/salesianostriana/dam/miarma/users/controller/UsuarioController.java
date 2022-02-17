@@ -37,7 +37,7 @@ public class UsuarioController {
     }
 
     @PutMapping("/profile/me")
-    public ResponseEntity<GetUsuarioMoreDetailsDTO> editProfile(@Valid GetUsuarioMoreDetailsDTO dto,
+    public ResponseEntity<GetUsuarioMoreDetailsDTO> editProfile(@Valid @RequestPart GetUsuarioMoreDetailsDTO dto,
                                                                 @RequestPart MultipartFile file,
                                                                 @AuthenticationPrincipal Usuario usuario) throws IOException {
 

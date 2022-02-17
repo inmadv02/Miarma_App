@@ -32,9 +32,10 @@ public class PostService extends BaseService<Post, Long, PostRepository> {
     private final UsuarioRepository usuarioRepository;
 
     public String uploadFiles(MultipartFile file) throws IOException {
-        storageService.scaleImage(file, 100);
 
-        String fileName = storageService.store(file);
+        MultipartFile newFile = storageService.scaleImage(file, 100);
+
+        String fileName = storageService.store(newFile);
 
         String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/uploads/")

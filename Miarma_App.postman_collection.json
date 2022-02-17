@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "192a96f4-10f5-416c-8a97-b3da44fb6921",
+		"_postman_id": "afc4011e-569c-4dea-b34d-1907821d17f8",
 		"name": "Miarma_App",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -67,7 +67,7 @@
 									"key": "file",
 									"contentType": "multipart/form-data",
 									"type": "file",
-									"src": "/C:/Users/PC/Downloads/5829268001_1_1_2.jpg"
+									"src": "/C:/Users/dominguez.vamar21/Downloads/09n.png"
 								},
 								{
 									"key": "nuevoUsuario",
@@ -309,7 +309,7 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/C:/Users/PC/Downloads/present-06-.jpg"
+									"src": "/C:/Users/dominguez.vamar21/Downloads/BTS-2.jpg"
 								},
 								{
 									"key": "post",
@@ -382,14 +382,14 @@
 							"formdata": []
 						},
 						"url": {
-							"raw": "localhost:8080/posts/1",
+							"raw": "localhost:8080/posts/2",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"posts",
-								"1"
+								"2"
 							]
 						}
 					},
@@ -440,7 +440,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/posts?nick=inmadv2",
+							"raw": "localhost:8080/posts?nick=inma_dv",
 							"host": [
 								"localhost"
 							],
@@ -451,8 +451,108 @@
 							"query": [
 								{
 									"key": "nick",
-									"value": "inmadv2"
+									"value": "inma_dv"
 								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Editar mi perfil",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "dto",
+									"value": "{\n    \"nombre\": \"M.ª Inmaculada Domínguez Vargas\",\n    \"nickname\" : \"inma_dv\",\n    \"descripcion\" : \"Sevilla, España.\",\n    \"email\": \"inma.dvgs@gmail.com\",\n    \"fechaNacimiento\" : \"2002-05-25\",\n     \"password\" : \"12334\",\n    \"visibilidad\": \"PUBLIC\"\n\n}",
+									"contentType": "application/json",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"contentType": "multipart/form-data",
+									"type": "file",
+									"src": "/C:/Users/dominguez.vamar21/Downloads/119778_creo_en_jesucristo...10.01.2020.jpg"
+								},
+								{
+									"key": "",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/profile/me",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"profile",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Petición de seguimiento",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"mensaje\" : \"Realizada la petición de seguimiento\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/follow/inma_dv",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"follow",
+								"inma_dv"
 							]
 						}
 					},
