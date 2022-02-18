@@ -50,3 +50,5 @@
 
 - Importar la colección de Postman que hay en el proyecto(Miarma_App.postman_collection)
 - Hacer uso de los ficheros en la carpeta "Archivos" del proyecto para realizar las peticiones que requieran un archivo multimedia(Registro, creación de post, editar un post, etc.)
+- En la colección hay una variable {{token}} para la autenticación de los usuarios, por lo que no es conveniente tocar esa variable. En caso de hacerlo, volver a poner en Authorization la variable.
+![image](https://user-images.githubusercontent.com/74898704/154687163-987f595d-dca5-4c2a-8d82-f6b2b259b395.png)
