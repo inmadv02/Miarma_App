@@ -12,6 +12,7 @@
 ## Pasos previos para poder ejecutar el proyecto 
 * #### **Descargar Maven**
 * #### **Descargar JAVA JDK 17**
+* #### **Descargar el proyecto**
 * #### **Abrir nuestro IDE**
 * #### **Configurar la version JDK**
 #### **Y finalmente...ejecutar el proyecto**
@@ -53,3 +54,5 @@
 - En la colección hay una variable {{token}} para la autenticación de los usuarios, por lo que no es conveniente tocar esa variable. En caso de hacerlo, volver a poner en Authorization la variable.
 
 ![image](https://user-images.githubusercontent.com/74898704/154687163-987f595d-dca5-4c2a-8d82-f6b2b259b395.png)
+
+
