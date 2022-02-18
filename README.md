@@ -4,7 +4,7 @@
 > ### ✒️ **Autor ✒️**
 * #### Mª Inmaculada Domínguez Vargas
 
-### 📋 Las entidades que forman nuestra aplicación 📋
+### 📋 Las entidades que componen aplicación 📋
 * #### Usuario 🧍
 * #### Post :mega: 
 * #### FollowRequest ↗️
@@ -12,6 +12,7 @@
 ## Pasos previos para poder ejecutar el proyecto 
 * #### **Descargar Maven**
 * #### **Descargar JAVA JDK 17**
+* #### **Descargar el proyecto**
 * #### **Abrir nuestro IDE**
 * #### **Configurar la version JDK**
 #### **Y finalmente...ejecutar el proyecto**
@@ -46,7 +47,12 @@
 5. Eliminar una petición de seguimiento.
 6. Listar todas las peticiones de seguimiento que existen.
 
-## **Cómo usar la colección de Postman correctamente**
+## :mailbox: **Cómo usar la colección de Postman correctamente** :mailbox: 
 
 - Importar la colección de Postman que hay en el proyecto(Miarma_App.postman_collection)
 - Hacer uso de los ficheros en la carpeta "Archivos" del proyecto para realizar las peticiones que requieran un archivo multimedia(Registro, creación de post, editar un post, etc.)
+- En la colección hay una variable {{token}} para la autenticación de los usuarios, por lo que no es conveniente tocar esa variable. En caso de hacerlo, volver a poner en Authorization la variable.
+
+![image](https://user-images.githubusercontent.com/74898704/154687163-987f595d-dca5-4c2a-8d82-f6b2b259b395.png)
+
+
