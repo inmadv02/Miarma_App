@@ -46,7 +46,7 @@
 5. Eliminar una petición de seguimiento.
 6. Listar todas las peticiones de seguimiento que existen.
 
-## ** :mailbox: Cómo usar la colección de Postman correctamente :mailbox: **
+## :mailbox: **Cómo usar la colección de Postman correctamente** :mailbox: 
 
 - Importar la colección de Postman que hay en el proyecto(Miarma_App.postman_collection)
 - Hacer uso de los ficheros en la carpeta "Archivos" del proyecto para realizar las peticiones que requieran un archivo multimedia(Registro, creación de post, editar un post, etc.)
