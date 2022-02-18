@@ -41,13 +41,12 @@ public class UsuarioService extends BaseService<Usuario, UUID, UsuarioRepository
 
     public Usuario save(CreateUsuarioDto nuevoUsuario, MultipartFile file) throws IOException, ImageException {
 
-        String imagenEscalada = storageService.scaleImage(file, 124);
+        String imagenEscalada = storageService.scaleImage(file, 128);
 
         String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/uploads/")
+                .path("uploads/")
                 .path(imagenEscalada)
                 .toUriString();
-
 
         Usuario usuario = Usuario.builder()
                     .password(passwordEncoder.encode(nuevoUsuario.getPassword()))
@@ -73,7 +72,7 @@ public class UsuarioService extends BaseService<Usuario, UUID, UsuarioRepository
     public Usuario editProfile(Usuario usuario, GetUsuarioMoreDetailsDTO usuarioDto, MultipartFile file) throws IOException, VideoException {
 
         storageService.deleteFile(usuario.getFoto());
-        String uri = postService.uploadFiles(file);
+        String uri = postService.uploadFiles(file, 128).get(0);
 
         usuario.setNickname(usuarioDto.getNickname());
         usuario.setFullname(usuarioDto.getNombre());

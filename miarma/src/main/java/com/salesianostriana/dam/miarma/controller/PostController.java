@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -81,7 +82,7 @@ public class PostController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deletePost(@PathVariable("id") Long id, @AuthenticationPrincipal Usuario usuario){
+    public ResponseEntity<?> deletePost(@PathVariable("id") Long id, @AuthenticationPrincipal Usuario usuario) throws FileNotFoundException {
 
         postService.deletePost(id, usuario);
 

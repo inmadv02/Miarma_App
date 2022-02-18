@@ -3,7 +3,7 @@ package com.salesianostriana.dam.miarma.services;
 import com.salesianostriana.dam.miarma.dto.post.CreatePostDTO;
 import com.salesianostriana.dam.miarma.dto.post.GetPostDTO;
 import com.salesianostriana.dam.miarma.dto.post.PostDTOConverter;
-import com.salesianostriana.dam.miarma.error.tiposErrores.FileNotFoundException;
+import com.salesianostriana.dam.miarma.error.tiposErrores.InvalidFormatException;
 import com.salesianostriana.dam.miarma.error.tiposErrores.UserNotFoundException;
 import com.salesianostriana.dam.miarma.model.Post;
 import com.salesianostriana.dam.miarma.error.tiposErrores.EntityNotFoundException;
@@ -19,7 +19,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -34,41 +36,59 @@ public class PostService extends BaseService<Post, Long, PostRepository> {
     private final StorageService storageService;
     private final UsuarioRepository usuarioRepository;
 
-    public String uploadFiles(MultipartFile file) throws IOException, VideoException {
+    public List<String> uploadFiles(MultipartFile file, int size) throws IOException, VideoException {
 
-        if(Objects.equals(file.getContentType(), "video/mp4")){
+        if(Objects.equals(file.getContentType(), "video")){
+
             String videoEscalado = storageService.scaleVideo(file);
+
+            String uriVEscalado = ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path("uploads/")
+                    .path(videoEscalado)
+                    .toUriString();
+
             String videoNormal = storageService.store(file);
 
             String uriV = ServletUriComponentsBuilder.fromCurrentContextPath()
-                    .path("/uploads/")
+                    .path("uploads/")
                     .path(videoNormal)
                     .toUriString();
-            return uriV;
+
+            return Arrays.asList(uriVEscalado, uriV);
         }
 
-        String imagenEscalada = storageService.scaleImage(file, 1024);
-        String fileName = storageService.store(file);
+        if (Objects.equals(file.getContentType(), "image")) {
+            String imagenEscalada = storageService.scaleImage(file, size);
 
-        String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/uploads/")
-                .path(imagenEscalada)
-                .toUriString();
+            String uriEscalada = ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path("uploads/")
+                    .path(imagenEscalada)
+                    .toUriString();
 
-        String uriOriginal = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/uploads/")
-                .path(fileName)
-                .toUriString();
+            String fileName = storageService.store(file);
 
-        return uri;
+            String uriOriginal = ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path("uploads/")
+                    .path(fileName)
+                    .toUriString();
+
+            return Arrays.asList(uriEscalada, uriOriginal);
+        }
+
+        else {
+            throw new InvalidFormatException("El archivo que ha subido no tiene un formato correcto");
+        }
     }
 
     public Post addPost (CreatePostDTO postDTO, MultipartFile file, Usuario usuario) throws IOException, VideoException {
 
         usuario = usuarioRepository.findFirstByNickname(usuario.getNickname()).get();
 
-        String uri = uploadFiles(file);
+        String uri = uploadFiles(file, 1024).get(0);
+        String uri2 = uploadFiles(file, 1024).get(1);
+
         postDTO.setUrlFoto(uri);
+        postDTO.setUrlFoto2(uri2);
 
         Post post = postDTOConverter.convertToPost(postDTO);
         post.addToUsuario(usuario);
@@ -80,23 +100,30 @@ public class PostService extends BaseService<Post, Long, PostRepository> {
     public Post editPost(GetPostDTO postDTO, Long id, MultipartFile file, Usuario usuario) throws IOException, VideoException {
 
         usuario = usuarioRepository.findFirstByNickname(usuario.getNickname()).get();
-        String uri = uploadFiles(file);
+        String uri = uploadFiles(file, 1024).get(0);
+        String uriImagenNormal = uploadFiles(file, 1024).get(1);
         Optional<Post> postOptional = postRepository.findById(id);
 
         if (postOptional.isEmpty()){
             throw new EntityNotFoundException(id, Post.class);
         }
+        else if(!usuario.equals(postOptional.get().getUsuarioPublicacion())){
+            throw new FileNotFoundException("No se ha podido encontrar el fichero");
+        }
 
-        return postOptional.map( post -> {
+        else {
+            return postOptional.map(post -> {
                 post.setTitulo(postDTO.getTitulo());
                 post.setDescripcion(postDTO.getTexto());
-                storageService.deleteFile(post.getUrlFichero());
-                post.setUrlFichero(uri);
+                storageService.deleteFile(post.getUrlFichero1());
+                storageService.deleteFile(post.getUrlFichero2());
+                post.setUrlFichero1(uri);
+                post.setUrlFichero2(uriImagenNormal);
                 post.setVisibilidad(postDTO.getVisibilidad());
                 postRepository.save(post);
                 return post;
             }).get();
-
+        }
     }
 
 
@@ -104,14 +131,19 @@ public class PostService extends BaseService<Post, Long, PostRepository> {
         return postRepository.findByVisibilidad(Visibilidad.PUBLIC);
     }
 
-    public void deletePost(Long id, Usuario usuario){
+    public void deletePost(Long id, Usuario usuario) throws FileNotFoundException {
 
         usuario = usuarioRepository.findFirstByNickname(usuario.getNickname()).get();
         Optional<Post> postAEliminar = postRepository.findById(id);
 
         if(postAEliminar.isPresent()) {
-            storageService.deleteFile(postAEliminar.get().getUrlFichero());
+            storageService.deleteFile(postAEliminar.get().getUrlFichero1());
+            storageService.deleteFile(postAEliminar.get().getUrlFichero2());
             postRepository.deleteById(id);
+        }
+
+        else if(!usuario.equals(postAEliminar.get().getUsuarioPublicacion())){
+            throw new FileNotFoundException("No se ha podido encontrar el fichero");
         }
         else {
             throw new EntityNotFoundException(id, Post.class);

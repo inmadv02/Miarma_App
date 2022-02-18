@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "a421a560-3cc7-40c0-a6ba-7eba95af62af",
+		"_postman_id": "cf48bac4-0bf5-4640-a5d9-2e4d459199a7",
 		"name": "Miarma_App",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -23,11 +23,55 @@
 									"key": "file",
 									"contentType": "multipart/form-data",
 									"type": "file",
-									"src": "/C:/Users/dominguez.vamar21/Downloads/b3bc1baf429da3d6509431ea26768d39.jpg"
+									"src": "/C:/Users/dominguez.vamar21/Desktop/Miarma_App/archivos/b3bc1baf429da3d6509431ea26768d39.jpg"
 								},
 								{
 									"key": "nuevoUsuario",
 									"value": "{\n    \"nickname\" : \"inma_dv\",\n    \"avatar\":  \"\",\n    \"fullname\" : \"M.ª Inmaculada Domínguez Vargas\",\n    \"fechaNacimiento\" : \"2002-05-25\",\n    \"email\" : \"inma.dvgs@gmail.com\",\n    \"password\" : \"12334\",\n    \"password2\" : \"12334\",\n\"visibilidad\": \"PUBLIC\"\n}",
+									"contentType": "application/json",
+									"type": "text"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/auth/register",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register PasswordError",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"contentType": "multipart/form-data",
+									"type": "file",
+									"src": "/C:/Users/dominguez.vamar21/Desktop/Miarma_App/archivos/b3bc1baf429da3d6509431ea26768d39.jpg"
+								},
+								{
+									"key": "nuevoUsuario",
+									"value": "{\n    \"nickname\" : \"inma_dv\",\n    \"avatar\":  \"\",\n    \"fullname\" : \"M.ª Inmaculada Domínguez Vargas\",\n    \"fechaNacimiento\" : \"2002-05-25\",\n    \"email\" : \"inma.dvgs@gmail.com\",\n    \"password\" : \"12334\",\n    \"password2\" : \"12r334\",\n\"visibilidad\": \"PUBLIC\"\n}",
 									"contentType": "application/json",
 									"type": "text"
 								}
@@ -67,7 +111,7 @@
 									"key": "file",
 									"contentType": "multipart/form-data",
 									"type": "file",
-									"src": "/C:/Users/PC/Downloads/4c64fd9f482665f7b9cb4143d45df517.jpg"
+									"src": "/C:/Users/dominguez.vamar21/Desktop/Miarma_App/archivos/profile+profile+page+user+icon-1320186864367220794.png"
 								},
 								{
 									"key": "nuevoUsuario",
@@ -197,28 +241,28 @@
 					"response": []
 				},
 				{
-					"name": "Login Usuario Demo",
+					"name": "Mi perfil",
 					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"nickname\" : \"se_como_jose\",\r\n    \"password\" : \"09876\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
 								}
-							}
+							]
 						},
+						"method": "GET",
+						"header": [],
 						"url": {
-							"raw": "localhost:8080/auth/login",
+							"raw": "localhost:8080/me",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"auth",
-								"login"
+								"me"
 							]
 						}
 					},
@@ -256,13 +300,13 @@
 							"formdata": [
 								{
 									"key": "file",
-									"contentType": "multipart/form-data",
+									"contentType": "image",
 									"type": "file",
-									"src": "/C:/Users/PC/Downloads/5829268001_1_1_2.jpg"
+									"src": "/C:/Users/dominguez.vamar21/Desktop/Miarma_App/archivos/dummy.jpeg"
 								},
 								{
 									"key": "createPostDTO",
-									"value": "{\n    \"titulo\" : \"Nuevo lanzamiento de BTS: Stay Alive\",\n    \"texto\": \"Los miembros de la mundialmente conocida banda coreana BTS, Jungkook y Suga, han sacado un nuevo single para su recién salido Webtoon\",\n    \"urlFoto\": \"\",\n    \"visibilidad\": \"PRIVATE\"\n}",
+									"value": "{\n    \"titulo\" : \"Nuevo lanzamiento de BTS: Stay Alive\",\n    \"texto\": \"Los miembros de la mundialmente conocida banda coreana BTS, Jungkook y Suga, han sacado un nuevo single para su recién salido Webtoon\",\n    \"urlFoto\": \"\",\n    \"urlFoto2\":\"\",\n    \"visibilidad\": \"PRIVATE\"\n}",
 									"contentType": "application/json",
 									"type": "text"
 								}
@@ -314,13 +358,13 @@
 							"formdata": [
 								{
 									"key": "file",
-									"contentType": "multipart/form-data",
+									"contentType": "video",
 									"type": "file",
-									"src": "/C:/Users/PC/Downloads/video de 1 segundo.mp4"
+									"src": "/C:/Users/dominguez.vamar21/Desktop/Miarma_App/archivos/video de 1 segundo.mp4"
 								},
 								{
 									"key": "createPostDTO",
-									"value": "{\n    \"titulo\" : \"Nuevo lanzamiento de BTS: Stay Alive\",\n    \"texto\": \"Los miembros de la mundialmente conocida banda coreana BTS, Jungkook y Suga, han sacado un nuevo single para su recién salido Webtoon\",\n    \"urlFoto\": \"\",\n    \"visibilidad\": \"PUBLIC\"\n}",
+									"value": "{\n    \"titulo\" : \"Nuevo lanzamiento de BTS: Stay Alive\",\n    \"texto\": \"Los miembros de la mundialmente conocida banda coreana BTS, Jungkook y Suga, han sacado un nuevo single para su recién salido Webtoon\",\n     \"urlFoto\": \"\",\n    \"urlFoto2\":\"\",\n    \"visibilidad\": \"PUBLIC\"\n}",
 									"contentType": "application/json",
 									"type": "text"
 								}
@@ -394,12 +438,13 @@
 							"formdata": [
 								{
 									"key": "file",
+									"contentType": "image",
 									"type": "file",
-									"src": "/C:/Users/dominguez.vamar21/Downloads/BTS-2.jpg"
+									"src": "/C:/Users/dominguez.vamar21/Desktop/Miarma_App/archivos/BTS-2.jpg"
 								},
 								{
 									"key": "post",
-									"value": "{\n    \"titulo\" : \"Nuevo lanzamiento de BTS: Stay Alive2\",\n    \"texto\": \"Los miembros de la mundialmente conocida banda coreana BTS, Jungkook y Suga, han sacado un nuevo single para su recién salido Webtoon\",\n    \"urlFoto\": \"\",\n    \"visibilidad\": \"PUBLIC\"\n}",
+									"value": "{\n    \"titulo\" : \"Nuevo lanzamiento de BTS: Stay Alive2\",\n    \"texto\": \"Los miembros de la mundialmente conocida banda coreana BTS, Jungkook y Suga, han sacado un nuevo single para su recién salido Webtoon\",\n    \"urlFoto1\": \"\",\n    \"urlFoto2\": \"\",\n    \"visibilidad\": \"PUBLIC\"\n}",
 									"contentType": "application/json",
 									"type": "text"
 								}
@@ -575,9 +620,9 @@
 								},
 								{
 									"key": "file",
-									"contentType": "multipart/form-data",
+									"contentType": "image",
 									"type": "file",
-									"src": "/C:/Users/dominguez.vamar21/Downloads/119778_creo_en_jesucristo...10.01.2020.jpg"
+									"src": "/C:/Users/dominguez.vamar21/Desktop/Miarma_App/archivos/4c64fd9f482665f7b9cb4143d45df517.jpg"
 								},
 								{
 									"key": "",

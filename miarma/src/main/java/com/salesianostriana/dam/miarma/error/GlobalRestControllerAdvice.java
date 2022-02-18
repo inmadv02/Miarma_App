@@ -3,9 +3,9 @@ package com.salesianostriana.dam.miarma.error;
 import com.salesianostriana.dam.miarma.error.model.ApiError;
 import com.salesianostriana.dam.miarma.error.model.ApiSubError;
 import com.salesianostriana.dam.miarma.error.model.ApiValidationSubError;
-import com.salesianostriana.dam.miarma.error.tiposErrores.EntityNotFoundException;
-import com.salesianostriana.dam.miarma.error.tiposErrores.ListEntityNotFoundException;
+import com.salesianostriana.dam.miarma.error.tiposErrores.*;
 import org.apache.tomcat.jni.Local;
+import org.apache.tomcat.jni.User;
 import org.hibernate.validator.internal.engine.path.PathImpl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -63,6 +63,21 @@ public class GlobalRestControllerAdvice extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ListEntityNotFoundException.class)
     public ResponseEntity<?> handleListEntityNotFoundException(ListEntityNotFoundException exception, WebRequest webRequest) {
         return buildApiError(HttpStatus.NOT_FOUND, exception, webRequest);
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<?> handleUserNotFoundException(UserNotFoundException exception, WebRequest webRequest) {
+        return buildApiError(HttpStatus.NOT_FOUND, exception, webRequest);
+    }
+
+    @ExceptionHandler(FileNotFoundException.class)
+    public ResponseEntity<?> handleFileNotFoundException(FileNotFoundException exception, WebRequest webRequest) {
+        return buildApiError(HttpStatus.NOT_FOUND, exception, webRequest);
+    }
+
+    @ExceptionHandler(InvalidFormatException.class)
+    public ResponseEntity<?> handleInvalidFormatException(InvalidFormatException exception, WebRequest webRequest) {
+        return buildApiError(HttpStatus.BAD_REQUEST, exception, webRequest);
     }
 
     @ExceptionHandler({ConstraintViolationException.class})
