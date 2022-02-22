@@ -15,9 +15,12 @@ import com.salesianostriana.dam.miarma.users.repository.UsuarioRepository;
 import io.github.techgnious.exception.ImageException;
 import io.github.techgnious.exception.VideoException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -127,8 +130,8 @@ public class PostService extends BaseService<Post, Long, PostRepository> {
     }
 
 
-    public List<Post> findAllPublicPost(){
-        return postRepository.findByVisibilidad(Visibilidad.PUBLIC);
+    public Page<Post> findAllPublicPost(Pageable pageable){
+        return postRepository.findByVisibilidad(Visibilidad.PUBLIC, pageable);
     }
 
     public void deletePost(Long id, Usuario usuario) throws FileNotFoundException {

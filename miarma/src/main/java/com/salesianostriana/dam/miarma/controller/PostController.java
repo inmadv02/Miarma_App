@@ -12,13 +12,18 @@ import io.github.techgnious.exception.ImageException;
 import io.github.techgnious.exception.VideoException;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
@@ -60,23 +65,20 @@ public class PostController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<List<GetPostDTO>> myPosts(@AuthenticationPrincipal Usuario usuario){
+    public ResponseEntity<Page<GetPostDTO>> myPosts(@AuthenticationPrincipal Usuario usuario, Pageable pageable){
 
-        List<GetPostDTO> lista = usuarioService.myPosts(usuario)
-                                                .stream()
-                                                .map(postDTOConverter::covertToPostDTO)
-                                                .collect(Collectors.toList());
+        Page<GetPostDTO> lista = usuarioService.myPosts(usuario, pageable)
+                                                .map(postDTOConverter::covertToPostDTO);
 
         return ResponseEntity.ok().body(lista);
     }
 
     @GetMapping("/public")
-    public ResponseEntity<List<GetPostDTO>> findAllPublicPosts(){
+    public ResponseEntity<Page<GetPostDTO>> findAllPublicPosts(@PageableDefault(page=0, size=9) Pageable pageable){
 
-        List<GetPostDTO> lista = postService.findAllPublicPost()
-                                                            .stream()
-                                                            .map(postDTOConverter::covertToPostDTO)
-                                                            .collect(Collectors.toList());
+        Page<GetPostDTO> lista = postService
+                                        .findAllPublicPost(pageable)
+                                        .map(postDTOConverter::covertToPostDTO);
 
         return ResponseEntity.ok().body(lista);
     }

@@ -12,6 +12,9 @@ import com.salesianostriana.dam.miarma.users.repository.UsuarioRepository;
 import io.github.techgnious.exception.ImageException;
 import io.github.techgnious.exception.VideoException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -61,11 +64,13 @@ public class UsuarioService extends BaseService<Usuario, UUID, UsuarioRepository
 
     }
 
-    public List<Post> myPosts(Usuario usuario){
+    public Page<Post> myPosts(Usuario usuario, Pageable pageable){
 
         usuario = repositorio.findFirstByNickname(usuario.getNickname()).get();
 
-        return usuario.getPublicaciones();
+        Page<Post> lista = new PageImpl<>(usuario.getPublicaciones());
+
+        return lista;
     }
 
 

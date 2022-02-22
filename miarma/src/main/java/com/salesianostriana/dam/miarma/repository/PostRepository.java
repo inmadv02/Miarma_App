@@ -3,6 +3,8 @@ package com.salesianostriana.dam.miarma.repository;
 import com.salesianostriana.dam.miarma.model.Post;
 import com.salesianostriana.dam.miarma.users.model.Usuario;
 import com.salesianostriana.dam.miarma.users.model.Visibilidad;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,7 +14,7 @@ import java.util.Optional;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 
-    List<Post> findByVisibilidad(Visibilidad visibilidad);
+    Page<Post> findByVisibilidad(Visibilidad visibilidad, Pageable pageable);
 
     List<Post> findByUsuarioPublicacionAndVisibilidad(Usuario usuario, Visibilidad visibilidad);
 
