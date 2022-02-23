@@ -1,36 +1,19 @@
-package com.salesianostriana.dam.miarma.images;
+package com.salesianostriana.dam.miarma.multimedia.images;
 
+import com.salesianostriana.dam.miarma.error.tiposErrores.ImageProcessException;
+import com.salesianostriana.dam.miarma.multimedia.images.ImageScaler;
 import org.imgscalr.Scalr;
+import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImagingOpException;
 import java.io.*;
-import java.util.Locale;
 
-public class ScalrImageScaler implements ImageScaler{
-    @Override
-    public byte[] scale(byte[] image, int width, String type) {
-        return new byte[0];
-    }
+@Service
+public class ScalrImageScaler implements ImageScaler {
 
     @Override
-    public byte[] scale(byte[] image, int width) {
-        return new byte[0];
-    }
-
-    @Override
-    public OutputStream scale(InputStream inputStream, int width) {
-        return null;
-    }
-
-    @Override
-    public BufferedImage scale(BufferedImage image, int width) {
-        return null;
-    }
-
-
-    /*@Override
     public byte[] scale(byte[] image, int width, String type) {
 
         String outputType = (type.toLowerCase().equalsIgnoreCase("jpg") ||
@@ -48,31 +31,26 @@ public class ScalrImageScaler implements ImageScaler{
 
             return byteArrayOutputStream.toByteArray();
 
-        }catch (IOException ex){
-
+        } catch (IOException ex){
+            throw new ImageProcessException("Ha habido un error al escalar la imagen", ex);
         }
 
     }
+
 
     @Override
     public byte[] scale(byte[] image, int width) {
         return new byte[0];
     }
 
-    @Override
-    public OutputStream scale(InputStream inputStream, int width) {
-        return null;
-    }
 
     @Override
-    public BufferedImage scale(BufferedImage image, int width) {
+    public BufferedImage scale(BufferedImage image, int width) throws ImageProcessException {
         try{
             return Scalr.resize(image, width);
-        } catch (IllegalArgumentException exception){
-            //
-        } catch (ImagingOpException imagingOpException){
-            //
+        } catch (IllegalArgumentException | ImagingOpException exception) {
+            throw new ImageProcessException("Ha habido un error al escalar la imagen", exception);
         }
 
-    }*/
+    }
 }

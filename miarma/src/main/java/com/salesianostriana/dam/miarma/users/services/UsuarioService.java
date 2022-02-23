@@ -1,6 +1,8 @@
 package com.salesianostriana.dam.miarma.users.services;
 
 import com.salesianostriana.dam.miarma.model.Post;
+import com.salesianostriana.dam.miarma.multimedia.images.ImageScaler;
+import com.salesianostriana.dam.miarma.multimedia.videos.VideoScaler;
 import com.salesianostriana.dam.miarma.services.PostService;
 import com.salesianostriana.dam.miarma.services.StorageService;
 import com.salesianostriana.dam.miarma.services.base.BaseService;
@@ -24,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,9 +35,8 @@ import java.util.UUID;
 public class UsuarioService extends BaseService<Usuario, UUID, UsuarioRepository> implements UserDetailsService {
 
     private final PasswordEncoder passwordEncoder;
-    private final StorageService storageService;
-
     private final PostService postService;
+    private final StorageService storageService;
 
     @Override
     public UserDetails loadUserByUsername(String nickname) throws UsernameNotFoundException {
@@ -42,19 +44,14 @@ public class UsuarioService extends BaseService<Usuario, UUID, UsuarioRepository
                 .orElseThrow(()-> new UsernameNotFoundException(nickname + " no encontrado"));
     }
 
-    public Usuario save(CreateUsuarioDto nuevoUsuario, MultipartFile file) throws IOException, ImageException {
+    public Usuario save(CreateUsuarioDto nuevoUsuario, MultipartFile file) throws IOException, ImageException, VideoException {
 
-        String imagenEscalada = storageService.scaleImage(file, 128);
-
-        String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("uploads/")
-                .path(imagenEscalada)
-                .toUriString();
+        List<String> uris = new ArrayList<>(postService.uploadFiles(file));
 
         Usuario usuario = Usuario.builder()
                     .password(passwordEncoder.encode(nuevoUsuario.getPassword()))
                     .fechaNacimiento(nuevoUsuario.getFechaNacimiento())
-                    .foto(uri)
+                    .foto(uris.get(0))
                     .fullname(nuevoUsuario.getFullname())
                     .nickname(nuevoUsuario.getNickname())
                     .email(nuevoUsuario.getEmail())
@@ -77,7 +74,7 @@ public class UsuarioService extends BaseService<Usuario, UUID, UsuarioRepository
     public Usuario editProfile(Usuario usuario, GetUsuarioMoreDetailsDTO usuarioDto, MultipartFile file) throws IOException, VideoException {
 
         storageService.deleteFile(usuario.getFoto());
-        String uri = postService.uploadFiles(file, 128).get(0);
+        String uri = postService.uploadFiles(file).get(0);
 
         usuario.setNickname(usuarioDto.getNickname());
         usuario.setFullname(usuarioDto.getNombre());

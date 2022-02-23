@@ -55,30 +55,55 @@ public class FileSystemStorageService implements StorageService {
 
     }
 
-
-
     @Override
     public String store(MultipartFile file) {
 
         String filename = StringUtils.cleanPath(file.getOriginalFilename());
+        String newfilename = " ";
 
         try {
             if (file.isEmpty())
                 throw new StorageException("El fichero que has subido está vacío");
 
-            createNameForFile(file);
+            newfilename = createNameForFile(filename);
 
             try (InputStream inputStream = file.getInputStream()) {
-                Files.copy(inputStream, rootLocation.resolve(filename),
+                Files.copy(inputStream, rootLocation.resolve(newfilename),
                         StandardCopyOption.REPLACE_EXISTING);
             }
 
 
         } catch (IOException exception) {
-            throw new StorageException("Error en el almacenamiento del siguiente fichero: " + filename, exception);
+            throw new StorageException("Error en el almacenamiento del siguiente fichero: " + newfilename, exception);
         }
 
-        return filename;
+        return newfilename;
+
+    }
+
+
+    @Override
+    public String store(byte[] file, String filename) {
+
+        String newfilename = StringUtils.cleanPath(filename);
+
+        if (file.length == 0)
+            throw new StorageException("El fichero subido está vacío");
+
+        newfilename = createNameForFile(newfilename);
+
+        try (InputStream inputStream = new ByteArrayInputStream(file)) {
+            //Files.write(rootLocation.resolve(newFilename), file);
+
+            Files.copy(inputStream, rootLocation.resolve(newfilename),
+                    StandardCopyOption.REPLACE_EXISTING);
+
+        } catch(IOException ex) {
+            throw new StorageException("Error en el almacenamiento del fichero: " + newfilename, ex);
+
+        }
+
+        return newfilename;
 
     }
 
@@ -135,40 +160,23 @@ public class FileSystemStorageService implements StorageService {
         FileSystemUtils.deleteRecursively(rootLocation.toFile());
     }
 
-    @Override
-    public String createNameForFile(MultipartFile file) {
 
-        String filename = StringUtils.cleanPath(file.getOriginalFilename());
-
-        while(Files.exists(rootLocation.resolve(filename))) {
+    private String createNameForFile(String filename) {
+        String newFilename = filename;
+        while(Files.exists(rootLocation.resolve(newFilename))) {
 
             String extension = StringUtils.getFilenameExtension(filename);
             String name = filename.replace("."+extension,"");
 
             String suffix = Double.toString(Math.floor(Math.random()*(1000000000-1)*1));
 
-            filename = name + "_" + suffix + "." + extension;
+            newFilename = name + "_" + suffix + "." + extension;
 
         }
-        return filename;
+        return newFilename;
     }
 
-
-    public String scaleImage(MultipartFile file, int size) throws IOException {
-
-        String filename = createNameForFile(file);
-        String extension = StringUtils.getFilenameExtension(filename);
-
-        BufferedImage original = ImageIO.read(file.getInputStream());
-        BufferedImage scaledImage = Scalr.resize(original, size);
-
-        OutputStream outputStream = Files.newOutputStream(Paths.get("uploads/" + filename));
-        ImageIO.write(scaledImage, extension, outputStream);
-
-        return filename;
-
-    }
-
+/*
     public String scaleVideo(MultipartFile file) throws IOException, VideoException {
 
         String filename = createNameForFile(file);
@@ -182,5 +190,5 @@ public class FileSystemStorageService implements StorageService {
 
         return filename;
 
-    }
+    }*/
 }

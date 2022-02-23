@@ -17,6 +17,8 @@ public interface StorageService {
 
     String store(MultipartFile file);
 
+    String store(byte[] file, String filename);
+
     Stream<Path> loadAll();
 
     Path load(String filename);
@@ -26,10 +28,4 @@ public interface StorageService {
     void deleteFile(String filename);
 
     void deleteAll();
-
-    String createNameForFile(MultipartFile file);
-
-    String scaleImage(MultipartFile file, int size) throws IOException;
-
-    String scaleVideo(MultipartFile file) throws IOException, VideoException;
 }

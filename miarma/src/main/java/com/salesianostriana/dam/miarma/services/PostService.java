@@ -5,16 +5,18 @@ import com.salesianostriana.dam.miarma.dto.post.GetPostDTO;
 import com.salesianostriana.dam.miarma.dto.post.PostDTOConverter;
 import com.salesianostriana.dam.miarma.error.tiposErrores.InvalidFormatException;
 import com.salesianostriana.dam.miarma.error.tiposErrores.UserNotFoundException;
+import com.salesianostriana.dam.miarma.multimedia.images.ImageScaler;
 import com.salesianostriana.dam.miarma.model.Post;
 import com.salesianostriana.dam.miarma.error.tiposErrores.EntityNotFoundException;
+import com.salesianostriana.dam.miarma.multimedia.videos.VideoScaler;
 import com.salesianostriana.dam.miarma.repository.PostRepository;
 import com.salesianostriana.dam.miarma.services.base.BaseService;
 import com.salesianostriana.dam.miarma.users.model.Usuario;
 import com.salesianostriana.dam.miarma.users.model.Visibilidad;
 import com.salesianostriana.dam.miarma.users.repository.UsuarioRepository;
-import io.github.techgnious.exception.ImageException;
 import io.github.techgnious.exception.VideoException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -28,52 +30,55 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class PostService extends BaseService<Post, Long, PostRepository> {
 
+    private static final String PREFIJO_ESCALADO = "scaled_";
+
     private final PostRepository postRepository;
     private final PostDTOConverter postDTOConverter;
     private final StorageService storageService;
     private final UsuarioRepository usuarioRepository;
+    private final ImageScaler escaladoImagen;
+    private final VideoScaler escaladoVideo;
 
-    public List<String> uploadFiles(MultipartFile file, int size) throws IOException, VideoException {
+    @Value("${miniatura.width:200}")
+    private int miniatura;
 
-        if(Objects.equals(file.getContentType(), "video")){
+    private String createUris(String filename){
+        return ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("uploads/")
+                .path(filename)
+                .toUriString();
+    }
 
-            String videoEscalado = storageService.scaleVideo(file);
 
-            String uriVEscalado = ServletUriComponentsBuilder.fromCurrentContextPath()
-                    .path("uploads/")
-                    .path(videoEscalado)
-                    .toUriString();
+    public List<String> uploadFiles(MultipartFile file) throws IOException, VideoException {
 
-            String videoNormal = storageService.store(file);
+       if(Objects.equals(file.getContentType(), "video")){
 
-            String uriV = ServletUriComponentsBuilder.fromCurrentContextPath()
-                    .path("uploads/")
-                    .path(videoNormal)
-                    .toUriString();
+           String videoNormal = storageService.store(file);
+           byte [] videoEscalado = escaladoVideo.scaleVideo(file.getBytes());
+           String nombreVideoEscalado = storageService.store(videoEscalado, PREFIJO_ESCALADO + videoNormal);
 
-            return Arrays.asList(uriVEscalado, uriV);
+           String uriVEscalado = createUris(nombreVideoEscalado);
+
+           String uriV = createUris(videoNormal);
+
+           return Arrays.asList(uriVEscalado, uriV);
         }
 
         if (Objects.equals(file.getContentType(), "image")) {
-            String imagenEscalada = storageService.scaleImage(file, size);
 
-            String uriEscalada = ServletUriComponentsBuilder.fromCurrentContextPath()
-                    .path("uploads/")
-                    .path(imagenEscalada)
-                    .toUriString();
+            String imagenNormal = storageService.store(file);
 
-            String fileName = storageService.store(file);
+            byte [] imagenEscalada = escaladoImagen.scale(file.getBytes(), miniatura);
+            String nombreImagenEscalada = storageService.store(imagenEscalada, PREFIJO_ESCALADO + imagenNormal);
 
-            String uriOriginal = ServletUriComponentsBuilder.fromCurrentContextPath()
-                    .path("uploads/")
-                    .path(fileName)
-                    .toUriString();
+            String uriOriginal = createUris(imagenNormal);
+            String uriEscalada = createUris(nombreImagenEscalada);
 
             return Arrays.asList(uriEscalada, uriOriginal);
         }
@@ -87,8 +92,8 @@ public class PostService extends BaseService<Post, Long, PostRepository> {
 
         usuario = usuarioRepository.findFirstByNickname(usuario.getNickname()).get();
 
-        String uri = uploadFiles(file, 1024).get(0);
-        String uri2 = uploadFiles(file, 1024).get(1);
+        String uri = uploadFiles(file).get(0);
+        String uri2 = uploadFiles(file).get(1);
 
         postDTO.setUrlFoto(uri);
         postDTO.setUrlFoto2(uri2);
@@ -103,8 +108,8 @@ public class PostService extends BaseService<Post, Long, PostRepository> {
     public Post editPost(GetPostDTO postDTO, Long id, MultipartFile file, Usuario usuario) throws IOException, VideoException {
 
         usuario = usuarioRepository.findFirstByNickname(usuario.getNickname()).get();
-        String uri = uploadFiles(file, 1024).get(0);
-        String uriImagenNormal = uploadFiles(file, 1024).get(1);
+        String uri = uploadFiles(file).get(0);
+        String uriImagenNormal = uploadFiles(file).get(1);
         Optional<Post> postOptional = postRepository.findById(id);
 
         if (postOptional.isEmpty()){
