@@ -13,7 +13,8 @@ public class PostDTOConverter {
         return Post.builder()
                     .titulo(createPostDTO.getTitulo())
                     .descripcion(createPostDTO.getTexto())
-                    .urlFichero(createPostDTO.getUrlFoto())
+                    .urlFichero1(createPostDTO.getUrlFoto())
+                    .urlFichero2(createPostDTO.getUrlFoto2())
                     .visibilidad(createPostDTO.getVisibilidad())
                     .build();
     }
@@ -22,7 +23,8 @@ public class PostDTOConverter {
         return GetPostDTO.builder()
                          .id(post.getPostId())
                          .texto(post.getDescripcion())
-                         .urlFoto(post.getUrlFichero())
+                         .urlFoto1(post.getUrlFichero1())
+                         .urlFoto2(post.getUrlFichero2())
                          .titulo(post.getTitulo())
                          .visibilidad(post.getVisibilidad())
                          .build();

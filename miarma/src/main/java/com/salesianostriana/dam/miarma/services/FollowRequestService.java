@@ -2,6 +2,7 @@ package com.salesianostriana.dam.miarma.services;
 
 import com.salesianostriana.dam.miarma.dto.followrequest.CreateFollowRequest;
 import com.salesianostriana.dam.miarma.dto.followrequest.FollowRequestDTOConverter;
+import com.salesianostriana.dam.miarma.error.tiposErrores.UserNotFoundException;
 import com.salesianostriana.dam.miarma.model.FollowRequest;
 import com.salesianostriana.dam.miarma.repository.FollowRequestRepository;
 import com.salesianostriana.dam.miarma.users.model.Usuario;
@@ -26,14 +27,20 @@ public class FollowRequestService {
 
         usuario = usuarioRepository.findFirstByNickname(usuario.getNickname()).get();
 
-        FollowRequest followRequest = dtoConverter.convertToFollowRequest(createFollowRequest);
+        if(queremosSeguir.isPresent()) {
 
-        followRequest.addToUsuario(queremosSeguir.get());
-        followRequest.addToUsuario2(usuario);
+            FollowRequest followRequest = dtoConverter.convertToFollowRequest(createFollowRequest);
 
-        repository.save(followRequest);
-        usuarioRepository.save(usuario);
+            followRequest.addToUsuario(queremosSeguir.get());
+            followRequest.addToUsuario2(usuario);
 
-        return followRequest;
+            repository.save(followRequest);
+            usuarioRepository.save(usuario);
+
+            return followRequest;
+        }
+        else {
+            throw new UserNotFoundException(queremosSeguir.get().getId(), Usuario.class);
+        }
     }
 }

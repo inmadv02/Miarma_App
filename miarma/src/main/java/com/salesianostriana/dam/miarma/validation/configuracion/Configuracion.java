@@ -12,7 +12,7 @@ public class Configuracion {
     @Bean
     public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-        messageSource.setBasename("classpath:error-messages");
+        messageSource.setBasename("classpath:errores");
         messageSource.setDefaultEncoding("UTF-8");
         return messageSource;
     }

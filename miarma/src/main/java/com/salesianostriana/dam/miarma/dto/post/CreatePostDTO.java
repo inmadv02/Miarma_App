@@ -20,8 +20,7 @@ public class CreatePostDTO {
     private String titulo, texto;
 
     @NotNull(message = "{campo.not.null}")
-    private String urlFoto;
-
+    private String urlFoto, urlFoto2;
 
     @NotNull(message = "{campo.not.null}")
     private Visibilidad visibilidad;

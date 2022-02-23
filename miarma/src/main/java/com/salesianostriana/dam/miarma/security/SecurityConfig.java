@@ -59,6 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .authorizeRequests()
                         .antMatchers(HttpMethod.POST, "/auth/**").anonymous()
+                        .antMatchers(HttpMethod.GET, "/me").authenticated()
                         .antMatchers(HttpMethod.POST, "/posts**").authenticated()
                         .antMatchers(HttpMethod.GET, "/posts**").authenticated()
                         .antMatchers(HttpMethod.PUT, "/posts**").authenticated()

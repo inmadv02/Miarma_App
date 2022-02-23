@@ -27,7 +27,7 @@ public class UsuarioController {
 
     @PostMapping("/auth/register")
     public ResponseEntity<GetUsuarioDto> nuevoUsuario(@Valid @RequestPart CreateUsuarioDto nuevoUsuario,
-                                                      @RequestPart MultipartFile file) throws IOException, ImageException {
+                                                      @RequestPart MultipartFile file) throws IOException, ImageException, VideoException {
         Usuario usuarioGuardado = usuarioService.save(nuevoUsuario, file);
 
         if (usuarioGuardado == null) {

@@ -19,7 +19,7 @@ public class Post implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long postId;
 
-    private String titulo, descripcion, urlFichero;
+    private String titulo, descripcion, urlFichero1, urlFichero2;
 
     private Visibilidad visibilidad;
 
