@@ -87,14 +87,12 @@ public class FileSystemStorageService implements StorageService {
 
         String newfilename = StringUtils.cleanPath(filename);
 
-        if (file.length == 0)
+        if (filename.isEmpty()) {
             throw new StorageException("El fichero subido está vacío");
-
+        }
         newfilename = createNameForFile(newfilename);
 
         try (InputStream inputStream = new ByteArrayInputStream(file)) {
-            //Files.write(rootLocation.resolve(newFilename), file);
-
             Files.copy(inputStream, rootLocation.resolve(newfilename),
                     StandardCopyOption.REPLACE_EXISTING);
 
