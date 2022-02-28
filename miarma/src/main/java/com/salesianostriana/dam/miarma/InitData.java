@@ -1,6 +1,8 @@
 package com.salesianostriana.dam.miarma;
 
+import com.salesianostriana.dam.miarma.dto.post.CreatePostDTO;
 import com.salesianostriana.dam.miarma.model.FollowRequest;
+import com.salesianostriana.dam.miarma.model.Post;
 import com.salesianostriana.dam.miarma.repository.FollowRequestRepository;
 import com.salesianostriana.dam.miarma.services.FollowRequestService;
 import com.salesianostriana.dam.miarma.services.PostService;
@@ -68,6 +70,34 @@ public class InitData {
         usuarioRepository.save(usuario1);
         usuarioRepository.save(usuario2);
         followRequestRepository.save(followRequest);
+
+        CreatePostDTO post = CreatePostDTO.builder()
+                .visibilidad(Visibilidad.PUBLIC)
+                .texto("Posts de relleno")
+                .urlFoto("https://mott.pe/noticias/wp-content/uploads/2018/03/10-trucos-para-saber-c%C3%B3mo-tomar-fotos-profesionales-con-el-celular-portada-1280x720.jpg")
+                .urlFoto2("https://mott.pe/noticias/wp-content/uploads/2018/03/10-trucos-para-saber-c%C3%B3mo-tomar-fotos-profesionales-con-el-celular-portada-1280x720.jpg")
+                .titulo("cosas")
+                .build();
+
+
+        CreatePostDTO post2 = CreatePostDTO.builder()
+                .visibilidad(Visibilidad.PUBLIC)
+                .texto("Posts de relleno 2")
+                .urlFoto("https://mott.pe/noticias/wp-content/uploads/2018/03/10-trucos-para-saber-c%C3%B3mo-tomar-fotos-profesionales-con-el-celular-portada-1280x720.jpg")
+                .urlFoto2("https://mott.pe/noticias/wp-content/uploads/2018/03/10-trucos-para-saber-c%C3%B3mo-tomar-fotos-profesionales-con-el-celular-portada-1280x720.jpg")
+                .titulo("cosas 2")
+                .build();
+
+
+        CreatePostDTO post3 = CreatePostDTO.builder()
+                .visibilidad(Visibilidad.PUBLIC)
+                .texto("Posts de relleno 3")
+                .urlFoto("https://mott.pe/noticias/wp-content/uploads/2018/03/10-trucos-para-saber-c%C3%B3mo-tomar-fotos-profesionales-con-el-celular-portada-1280x720.jpg")
+                .urlFoto2("https://mott.pe/noticias/wp-content/uploads/2018/03/10-trucos-para-saber-c%C3%B3mo-tomar-fotos-profesionales-con-el-celular-portada-1280x720.jpg")
+                .titulo("cosas 3")
+                .build();
+
+        postService.
 
     }
 

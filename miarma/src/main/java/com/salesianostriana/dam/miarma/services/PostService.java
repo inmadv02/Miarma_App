@@ -120,12 +120,14 @@ public class PostService extends BaseService<Post, Long, PostRepository> {
         }
 
         else {
+            Usuario finalUsuario = usuario;
             return postOptional.map(post -> {
                 post.setTitulo(postDTO.getTitulo());
                 post.setDescripcion(postDTO.getTexto());
                 storageService.deleteFile(post.getUrlFichero1());
                 storageService.deleteFile(post.getUrlFichero2());
                 post.setUrlFichero1(uri);
+                post.setUsuarioPublicacion(finalUsuario);
                 post.setUrlFichero2(uriImagenNormal);
                 post.setVisibilidad(postDTO.getVisibilidad());
                 postRepository.save(post);

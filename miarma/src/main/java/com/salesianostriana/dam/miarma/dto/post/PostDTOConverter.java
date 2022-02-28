@@ -26,6 +26,7 @@ public class PostDTOConverter {
                          .urlFoto1(post.getUrlFichero1())
                          .urlFoto2(post.getUrlFichero2())
                          .titulo(post.getTitulo())
+                         .nickname(post.getUsuarioPublicacion().getNickname())
                          .visibilidad(post.getVisibilidad())
                          .build();
     }

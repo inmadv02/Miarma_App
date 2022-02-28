@@ -22,4 +22,6 @@ public class GetPostDTO {
 
     @NotNull(message = "{campo.not.null}")
     private Visibilidad visibilidad;
+
+    private String nickname;
 }
