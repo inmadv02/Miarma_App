@@ -24,7 +24,6 @@ public class ScalrImageScaler implements ImageScaler {
 
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
-
             BufferedImage bufferedImage = ImageIO.read(inputStream);
             BufferedImage scaled = scale(bufferedImage, width);
             ImageIO.write(scaled, outputType, byteArrayOutputStream);

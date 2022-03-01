@@ -27,6 +27,8 @@ public class PostDTOConverter {
                          .urlFoto2(post.getUrlFichero2())
                          .titulo(post.getTitulo())
                          .nickname(post.getUsuarioPublicacion().getNickname())
+                         .fotoPerfil(post.getUsuarioPublicacion().getFoto())
+                         .likes(post.getLikes())
                          .visibilidad(post.getVisibilidad())
                          .build();
     }

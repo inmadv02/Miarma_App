@@ -17,11 +17,12 @@ public class GetPostDTO {
     private Long id;
     private String titulo, texto, urlFoto1;
 
-    @JsonIgnore
     private String urlFoto2;
 
     @NotNull(message = "{campo.not.null}")
     private Visibilidad visibilidad;
 
     private String nickname;
+    private String fotoPerfil;
+    private int likes;
 }

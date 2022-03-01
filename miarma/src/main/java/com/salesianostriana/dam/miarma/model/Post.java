@@ -26,6 +26,7 @@ public class Post implements Serializable {
     @ManyToOne
     private Usuario usuarioPublicacion;
 
+    private int likes;
 
     //// HELPERS ////
 
