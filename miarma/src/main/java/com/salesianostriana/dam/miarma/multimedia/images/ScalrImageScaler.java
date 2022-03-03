@@ -18,17 +18,16 @@ public class ScalrImageScaler implements ImageScaler {
 
         String outputType = (type.toLowerCase().equalsIgnoreCase("jpg") ||
                             type.toLowerCase().equalsIgnoreCase("png") ||
-                            type.toLowerCase().equalsIgnoreCase("gif")  ? type : "png");
+                            type.toLowerCase().equalsIgnoreCase("gif")  ? type : "jpg");
 
-        try(InputStream inputStream = new ByteArrayInputStream(image)){
-
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        try(InputStream inputStream = new ByteArrayInputStream(image);
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
 
             BufferedImage bufferedImage = ImageIO.read(inputStream);
             BufferedImage scaled = scale(bufferedImage, width);
-            ImageIO.write(scaled, outputType, byteArrayOutputStream);
+            ImageIO.write(scaled, outputType, outputStream);
 
-            return byteArrayOutputStream.toByteArray();
+            return outputStream.toByteArray();
 
         } catch (IOException ex){
             throw new ImageProcessException("Ha habido un error al escalar la imagen", ex);

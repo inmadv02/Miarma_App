@@ -70,11 +70,11 @@ public class PostService extends BaseService<Post, Long, PostRepository> {
            return Arrays.asList(uriVEscalado, uriV);
         }
 
-        if (Objects.equals(file.getContentType(), "image")) {
+        if (Objects.equals(file.getContentType(), "image/jpg")) {
 
             String imagenNormal = storageService.store(file);
 
-            byte [] imagenEscalada = escaladoImagen.scale(file.getBytes(), miniatura);
+            byte [] imagenEscalada = escaladoImagen.scale(file.getBytes(), miniatura, "jpg");
             String nombreImagenEscalada = storageService.store(imagenEscalada, PREFIJO_ESCALADO + imagenNormal);
 
             String uriOriginal = createUris(imagenNormal);
