@@ -21,7 +21,7 @@
 							"formdata": [
 								{
 									"key": "file",
-									"contentType": "multipart/form-data",
+									"contentType": "image/jpg",
 									"type": "file",
 									"src": "/C:/Users/dominguez.vamar21/Desktop/Miarma_App/archivos/b3bc1baf429da3d6509431ea26768d39.jpg"
 								},
@@ -300,7 +300,7 @@
 							"formdata": [
 								{
 									"key": "file",
-									"contentType": "image",
+									"contentType": "image/jpg",
 									"type": "file",
 									"src": "/C:/Users/dominguez.vamar21/Desktop/Miarma_App/archivos/dummy.jpeg"
 								},
@@ -684,6 +684,34 @@
 							"path": [
 								"follow",
 								"inma_dv"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Mis datos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/myprofile",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"myprofile"
 							]
 						}
 					},
