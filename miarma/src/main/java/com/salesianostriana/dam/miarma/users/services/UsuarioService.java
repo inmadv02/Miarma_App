@@ -6,9 +6,7 @@ import com.salesianostriana.dam.miarma.multimedia.videos.VideoScaler;
 import com.salesianostriana.dam.miarma.services.PostService;
 import com.salesianostriana.dam.miarma.services.StorageService;
 import com.salesianostriana.dam.miarma.services.base.BaseService;
-import com.salesianostriana.dam.miarma.users.dto.CreateUsuarioDto;
-import com.salesianostriana.dam.miarma.users.dto.GetUsuarioDto;
-import com.salesianostriana.dam.miarma.users.dto.GetUsuarioMoreDetailsDTO;
+import com.salesianostriana.dam.miarma.users.dto.*;
 import com.salesianostriana.dam.miarma.users.model.Usuario;
 import com.salesianostriana.dam.miarma.users.repository.UsuarioRepository;
 import io.github.techgnious.exception.ImageException;
@@ -37,6 +35,7 @@ public class UsuarioService extends BaseService<Usuario, UUID, UsuarioRepository
     private final PasswordEncoder passwordEncoder;
     private final PostService postService;
     private final StorageService storageService;
+    private final UserDTOConverter dtoConverter;
 
     @Override
     public UserDetails loadUserByUsername(String nickname) throws UsernameNotFoundException {
@@ -91,6 +90,13 @@ public class UsuarioService extends BaseService<Usuario, UUID, UsuarioRepository
 
         return usuario;
 
+    }
+
+    public GetUsuarioWithPostsImagesDto myProfile(Usuario usuario){
+        Usuario usuario1 = repositorio.findFirstByNickname(usuario.getNickname()).get();
+        GetUsuarioWithPostsImagesDto usuarioDto = dtoConverter.convertToGetUsuarioWithPhotos(usuario);
+
+        return usuarioDto;
     }
 
 }

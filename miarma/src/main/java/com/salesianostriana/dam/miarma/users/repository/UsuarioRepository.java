@@ -17,5 +17,10 @@ public interface UsuarioRepository extends JpaRepository<Usuario, UUID> {
     @Query("select u.siguiendo from Usuario u where u= ?1")
     List<Usuario> publicacionesUsuario(Usuario usuario);
 
+    @Query("select u.seguidores from Usuario u where u= ?1")
+    List<Usuario> seguidoresDeUnUsuario(Usuario usuario);
+
+    @Query("select u.publicaciones from Usuario u where u= ?1")
+    List<Post> publicacionesUsuario2(Usuario usuario);
 
 }

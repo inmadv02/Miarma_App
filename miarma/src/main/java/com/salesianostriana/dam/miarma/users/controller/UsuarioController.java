@@ -1,9 +1,6 @@
 package com.salesianostriana.dam.miarma.users.controller;
 
-import com.salesianostriana.dam.miarma.users.dto.CreateUsuarioDto;
-import com.salesianostriana.dam.miarma.users.dto.GetUsuarioDto;
-import com.salesianostriana.dam.miarma.users.dto.GetUsuarioMoreDetailsDTO;
-import com.salesianostriana.dam.miarma.users.dto.UserDTOConverter;
+import com.salesianostriana.dam.miarma.users.dto.*;
 import com.salesianostriana.dam.miarma.users.model.Usuario;
 import com.salesianostriana.dam.miarma.users.services.UsuarioService;
 import io.github.techgnious.exception.ImageException;
@@ -49,5 +46,16 @@ public class UsuarioController {
 
     }
 
+    @GetMapping("/myprofile")
+    public ResponseEntity<GetUsuarioWithPostsImagesDto> myProfile(@AuthenticationPrincipal Usuario usuario) {
+        GetUsuarioWithPostsImagesDto getUsuarioDto = usuarioService.myProfile(usuario);
+
+        if (getUsuarioDto == null) {
+            return ResponseEntity.badRequest().build();
+
+        } else {
+            return ResponseEntity.ok().body(getUsuarioDto);
+        }
+    }
 
 }
