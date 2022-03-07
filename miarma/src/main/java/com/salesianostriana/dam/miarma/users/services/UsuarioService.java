@@ -26,6 +26,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service("userDetailsService")
@@ -98,5 +99,7 @@ public class UsuarioService extends BaseService<Usuario, UUID, UsuarioRepository
 
         return usuarioDto;
     }
+
+
 
 }

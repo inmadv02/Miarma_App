@@ -16,6 +16,7 @@ import java.net.URI;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin("http://localhost:4200")
 public class FileController {
 
     private final StorageService storageService;

@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
 
 @RestControllerAdvice
 @RequiredArgsConstructor
+@CrossOrigin("http://localhost:4200")
 @RequestMapping("/posts")
 public class PostController {
 
