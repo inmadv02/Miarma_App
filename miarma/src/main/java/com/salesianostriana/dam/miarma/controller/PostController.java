@@ -117,4 +117,22 @@ public class PostController {
         return ResponseEntity.ok().body(getPostDTOList);
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<Page<GetPostDTO>> todosLosPosts(@AuthenticationPrincipal Usuario usuario, @PageableDefault(page=0, size=9) Pageable pageable){
+
+        Page<GetPostDTO> lista = postService
+                .findAll(pageable, usuario)
+                .map(postDTOConverter::covertToPostDTO);
+
+        return ResponseEntity.ok().body(lista);
+    }
+
+    @DeleteMapping("/admin/{id}")
+    public ResponseEntity<?> deletePost2(@PathVariable("id") Long id, @AuthenticationPrincipal Usuario usuario){
+
+        postService.deletePosts(id, usuario);
+
+        return ResponseEntity.noContent().build();
+    }
+
 }

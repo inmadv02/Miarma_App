@@ -161,6 +161,23 @@ public class PostService extends BaseService<Post, Long, PostRepository> {
 
     }
 
+    public void deletePosts(Long id, Usuario usuario){
+
+        usuario = usuarioRepository.findFirstByNickname(usuario.getNickname()).get();
+        Optional<Post> postAEliminar = postRepository.findById(id);
+
+        if(postAEliminar.isPresent()) {
+            storageService.deleteFile(postAEliminar.get().getUrlFichero1());
+            storageService.deleteFile(postAEliminar.get().getUrlFichero2());
+            postRepository.deleteById(id);
+        }
+
+        else {
+            throw new EntityNotFoundException(id, Post.class);
+        }
+
+    }
+
     public Post findOne(Long id, Usuario usuario){
 
         Optional<Post> post = postRepository.findById(id);
@@ -195,6 +212,13 @@ public class PostService extends BaseService<Post, Long, PostRepository> {
             throw new UserNotFoundException(buscado.get().getId(), Usuario.class);
         }
 
+    }
+
+    public Page<Post> findAll(Pageable pageable, Usuario usuario){
+
+        usuario = usuarioRepository.findFirstByNickname(usuario.getNickname()).get();
+
+        return postRepository.findAll(pageable);
     }
 
 
