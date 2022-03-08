@@ -29,6 +29,22 @@ public class UserDTOConverter {
 
     }
 
+    public GetUsuarioAdminDto convertUserEntityToGetUserAdminDto(Usuario usuario) {
+        return GetUsuarioAdminDto.builder()
+                .id(usuario.getId())
+                .nickname(usuario.getNickname())
+                .foto(usuario.getFoto())
+                .descripcion(usuario.getBiografia() == null ? " " : usuario.getBiografia())
+                .numeroSeguidores(usuario.getSeguidores().size())
+                .visibilidad(usuario.getVisibilidad().getTexto())
+                .numeroSiguiendo(usuario.getSiguiendo().size())
+                .isAdmin(true)
+                .publicaciones(usuario.getPublicaciones())
+                .build();
+
+
+    }
+
     public GetUsuarioWithPostsImagesDto convertToGetUsuarioWithPhotos(Usuario usuario){
         return GetUsuarioWithPostsImagesDto
                         .builder()
@@ -56,7 +72,6 @@ public class UserDTOConverter {
                 .email(usuario.getEmail())
                 .password(usuario.getPassword())
                 .build();
-
 
     }
 

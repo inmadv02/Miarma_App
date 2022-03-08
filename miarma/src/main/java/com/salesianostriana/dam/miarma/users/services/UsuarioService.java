@@ -100,6 +100,25 @@ public class UsuarioService extends BaseService<Usuario, UUID, UsuarioRepository
         return usuarioDto;
     }
 
+    public GetUsuarioAdminDto beAdmin(UUID id){
+        Optional<Usuario> usuario1 = repositorio.findById(id);
+
+        GetUsuarioAdminDto getUsuarioAdminDto = dtoConverter.convertUserEntityToGetUserAdminDto(usuario1.get());
+
+        getUsuarioAdminDto.setAdmin(true);
+
+        return getUsuarioAdminDto;
+    }
+
+    public GetUsuarioAdminDto notAdmin(UUID id){
+        Optional<Usuario> usuario1 = repositorio.findById(id);
+
+        GetUsuarioAdminDto getUsuarioAdminDto = dtoConverter.convertUserEntityToGetUserAdminDto(usuario1.get());
+
+        getUsuarioAdminDto.setAdmin(false);
+
+        return getUsuarioAdminDto;
+    }
 
 
 }
