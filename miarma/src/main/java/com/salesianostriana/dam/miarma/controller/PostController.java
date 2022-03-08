@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 
 @RestControllerAdvice
 @RequiredArgsConstructor
-@CrossOrigin("http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/posts")
 public class PostController {
 
@@ -118,7 +118,8 @@ public class PostController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<Page<GetPostDTO>> todosLosPosts(@AuthenticationPrincipal Usuario usuario, @PageableDefault(page=0, size=9) Pageable pageable){
+    public ResponseEntity<Page<GetPostDTO>> todosLosPosts(@AuthenticationPrincipal Usuario usuario,
+                                                          @PageableDefault(page=0, size=9) Pageable pageable){
 
         Page<GetPostDTO> lista = postService
                 .findAll(pageable, usuario)
@@ -128,7 +129,8 @@ public class PostController {
     }
 
     @DeleteMapping("/admin/{id}")
-    public ResponseEntity<?> deletePost2(@PathVariable("id") Long id, @AuthenticationPrincipal Usuario usuario){
+    public ResponseEntity<?> deletePost2(@PathVariable("id") Long id,
+                                         @AuthenticationPrincipal Usuario usuario){
 
         postService.deletePosts(id, usuario);
 
