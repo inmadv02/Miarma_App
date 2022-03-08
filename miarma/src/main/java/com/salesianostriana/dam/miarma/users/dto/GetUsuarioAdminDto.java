@@ -19,12 +19,6 @@ public class GetUsuarioAdminDto {
     private String nickname;
     private String descripcion;
     private String foto;
-    private List<Post> publicaciones;
-    private int numeroSeguidores;
-    private int numeroSiguiendo;
     private boolean isAdmin;
 
-    @NotBlank(message = "{campo.not.empty}")
-    @NotNull(message = "{campo.not.null}")
-    private String visibilidad;
 }

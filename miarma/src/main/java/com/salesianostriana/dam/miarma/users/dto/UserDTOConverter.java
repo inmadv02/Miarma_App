@@ -35,11 +35,7 @@ public class UserDTOConverter {
                 .nickname(usuario.getNickname())
                 .foto(usuario.getFoto())
                 .descripcion(usuario.getBiografia() == null ? " " : usuario.getBiografia())
-                .numeroSeguidores(usuario.getSeguidores().size())
-                .visibilidad(usuario.getVisibilidad().getTexto())
-                .numeroSiguiendo(usuario.getSiguiendo().size())
                 .isAdmin(true)
-                .publicaciones(usuario.getPublicaciones())
                 .build();
 
 

@@ -70,6 +70,7 @@ public class Usuario implements UserDetails {
 
     private LocalDate fechaNacimiento;
 
+    private boolean idAdmin;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
