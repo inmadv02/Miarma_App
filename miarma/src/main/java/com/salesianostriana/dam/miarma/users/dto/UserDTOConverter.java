@@ -35,7 +35,7 @@ public class UserDTOConverter {
                 .nickname(usuario.getNickname())
                 .foto(usuario.getFoto())
                 .descripcion(usuario.getBiografia() == null ? " " : usuario.getBiografia())
-                .isAdmin(true)
+                .isAdmin(usuario.isIdAdmin())
                 .build();
 
 

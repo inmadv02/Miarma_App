@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -69,10 +71,25 @@ public class UsuarioController {
                                                               @PageableDefault(page=0, size=9) Pageable pageable){
 
         Page<GetUsuarioAdminDto> lista = usuarioService
-                                                .allAdminUsers(pageable)
+                                                .allUsers(usuario, pageable)
                                                 .map(userDtoConverter::convertUserEntityToGetUserAdminDto);
 
         return ResponseEntity.ok().body(lista);
     }
 
+    @PutMapping("/not-admin/{id}")
+    public ResponseEntity<?> notAdmin(@AuthenticationPrincipal Usuario usuario, @PathVariable UUID id){
+
+        GetUsuarioAdminDto usuarioAdminDto = usuarioService.notAdmin(id, usuario);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/be-admin/{id}")
+    public ResponseEntity<GetUsuarioAdminDto> beAdmin(@AuthenticationPrincipal Usuario usuario, @PathVariable UUID id){
+
+        GetUsuarioAdminDto usuarioAdminDto = usuarioService.beAdmin(id, usuario);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioAdminDto);
+    }
 }

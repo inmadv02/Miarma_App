@@ -44,6 +44,7 @@ public class InitData {
                             .password(passwordEncoder.encode("09876"))
                             .email("joselito@gmail.com")
                             .idAdmin(true)
+                            .biografia("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat")
                             .fechaNacimiento(LocalDate.of(2000, 6, 4))
                             .foto("https://img.blogs.es/anexom/wp-content/uploads/2021/12/perfil-1024x754.jpg")
                             .nickname("se_como_jose")
@@ -52,14 +53,15 @@ public class InitData {
 
         Usuario usuario2 = Usuario
                             .builder()
-                            .fullname("Marina Gómez Vargas")
+                            .fullname("Maria Gómez Vargas")
                             .visibilidad(Visibilidad.PRIVATE)
-                            .idAdmin(true)
+                            .idAdmin(false)
+                            .biografia("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat")
                             .password(passwordEncoder.encode("876543"))
-                            .email("marinagv@gmail.com")
+                            .email("mariagv@gmail.com")
                             .fechaNacimiento(LocalDate.of(1998, 3, 24))
                             .foto("https://holatelcel.com/wp-content/uploads/2020/12/foto-perfil-whatsapp-.png")
-                            .nickname("marina_mariae")
+                            .nickname("maria_mariae")
                             .publicaciones(new ArrayList<>())
                             .build();
 

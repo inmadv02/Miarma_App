@@ -102,24 +102,27 @@ public class UsuarioService extends BaseService<Usuario, UUID, UsuarioRepository
         return usuarioDto;
     }
 
-    public Page<Usuario> allAdminUsers(Pageable pageable){
-        return repositorio.findAllByIdAdmin(true, pageable);
+    public Page<Usuario> allUsers(Usuario usuario, Pageable pageable){
+        return repositorio.findAll(pageable);
     }
 
     public GetUsuarioAdminDto beAdmin(UUID id, Usuario usuario){
+
         if(usuario.isIdAdmin()){
-            Optional<Usuario> usuario1 = repositorio.findById(id);
+            Usuario usuario1 = repositorio.findById(id).get();
 
-            usuario1.get().setIdAdmin(true);
+            usuario1.setIdAdmin(true);
+            repositorio.save(usuario1);
 
-            GetUsuarioAdminDto getUsuarioAdminDto = dtoConverter.convertUserEntityToGetUserAdminDto(usuario1.get());
-
+            GetUsuarioAdminDto getUsuarioAdminDto = dtoConverter.convertUserEntityToGetUserAdminDto(usuario1);
             return getUsuarioAdminDto;
         }
 
         else {
             throw  new UserNotFoundException(id, Usuario.class);
         }
+
+
     }
 
     public GetUsuarioAdminDto notAdmin(UUID id, Usuario usuario){
