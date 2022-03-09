@@ -1,5 +1,6 @@
 package com.salesianostriana.dam.miarma.users.services;
 
+import com.salesianostriana.dam.miarma.error.tiposErrores.UserNotFoundException;
 import com.salesianostriana.dam.miarma.model.Post;
 import com.salesianostriana.dam.miarma.multimedia.images.ImageScaler;
 import com.salesianostriana.dam.miarma.multimedia.videos.VideoScaler;
@@ -52,6 +53,7 @@ public class UsuarioService extends BaseService<Usuario, UUID, UsuarioRepository
                     .password(passwordEncoder.encode(nuevoUsuario.getPassword()))
                     .fechaNacimiento(nuevoUsuario.getFechaNacimiento())
                     .foto(uris.get(0))
+                    .idAdmin(true)
                     .fullname(nuevoUsuario.getFullname())
                     .nickname(nuevoUsuario.getNickname())
                     .email(nuevoUsuario.getEmail())
@@ -100,6 +102,43 @@ public class UsuarioService extends BaseService<Usuario, UUID, UsuarioRepository
         return usuarioDto;
     }
 
+    public Page<Usuario> allAdminUsers(Pageable pageable){
+        return repositorio.findAllByIdAdmin(true, pageable);
+    }
+
+    public GetUsuarioAdminDto beAdmin(UUID id, Usuario usuario){
+        if(usuario.isIdAdmin()){
+            Optional<Usuario> usuario1 = repositorio.findById(id);
+
+            usuario1.get().setIdAdmin(true);
+
+            GetUsuarioAdminDto getUsuarioAdminDto = dtoConverter.convertUserEntityToGetUserAdminDto(usuario1.get());
+
+            return getUsuarioAdminDto;
+        }
+
+        else {
+            throw  new UserNotFoundException(id, Usuario.class);
+        }
+    }
+
+    public GetUsuarioAdminDto notAdmin(UUID id, Usuario usuario){
+
+        if(usuario.isIdAdmin()){
+            Optional<Usuario> usuario1 = repositorio.findById(id);
+
+            usuario1.get().setIdAdmin(false);
+
+            GetUsuarioAdminDto getUsuarioAdminDto = dtoConverter.convertUserEntityToGetUserAdminDto(usuario1.get());
+
+            return getUsuarioAdminDto;
+        }
+
+        else {
+            throw  new UserNotFoundException(id, Usuario.class);
+        }
+
+    }
 
 
 }

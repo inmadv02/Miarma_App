@@ -43,6 +43,7 @@ public class InitData {
                             .visibilidad(Visibilidad.PUBLIC)
                             .password(passwordEncoder.encode("09876"))
                             .email("joselito@gmail.com")
+                            .idAdmin(true)
                             .fechaNacimiento(LocalDate.of(2000, 6, 4))
                             .foto("https://img.blogs.es/anexom/wp-content/uploads/2021/12/perfil-1024x754.jpg")
                             .nickname("se_como_jose")
@@ -53,6 +54,7 @@ public class InitData {
                             .builder()
                             .fullname("Marina Gómez Vargas")
                             .visibilidad(Visibilidad.PRIVATE)
+                            .idAdmin(true)
                             .password(passwordEncoder.encode("876543"))
                             .email("marinagv@gmail.com")
                             .fechaNacimiento(LocalDate.of(1998, 3, 24))
@@ -76,30 +78,30 @@ public class InitData {
 
         Post post = Post.builder()
                 .visibilidad(Visibilidad.PUBLIC)
-                .descripcion("Relleno")
+                .descripcion("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat")
                 .usuarioPublicacion(usuario1)
                 .urlFichero1("https://mott.pe/noticias/wp-content/uploads/2018/03/10-trucos-para-saber-c%C3%B3mo-tomar-fotos-profesionales-con-el-celular-portada-1280x720.jpg")
                 .urlFichero2("https://mott.pe/noticias/wp-content/uploads/2018/03/10-trucos-para-saber-c%C3%B3mo-tomar-fotos-profesionales-con-el-celular-portada-1280x720.jpg")
-                .titulo("cosas")
+                .titulo("Post 1")
                 .build();
 
 
         Post post2 = Post.builder()
                 .visibilidad(Visibilidad.PUBLIC)
-                .descripcion("Relleno 2")
+                .descripcion("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat")
                 .usuarioPublicacion(usuario1)
                 .urlFichero1("https://mott.pe/noticias/wp-content/uploads/2018/03/10-trucos-para-saber-c%C3%B3mo-tomar-fotos-profesionales-con-el-celular-portada-1280x720.jpg")
                 .urlFichero2("https://mott.pe/noticias/wp-content/uploads/2018/03/10-trucos-para-saber-c%C3%B3mo-tomar-fotos-profesionales-con-el-celular-portada-1280x720.jpg")
-                .titulo("cosas 2")
+                .titulo("Post 2")
                 .build();
 
         Post post3 = Post.builder()
                 .visibilidad(Visibilidad.PUBLIC)
-                .descripcion("Relleno 3")
+                .descripcion("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat")
                 .usuarioPublicacion(usuario2)
                 .urlFichero1("https://mott.pe/noticias/wp-content/uploads/2018/03/10-trucos-para-saber-c%C3%B3mo-tomar-fotos-profesionales-con-el-celular-portada-1280x720.jpg")
                 .urlFichero2("https://mott.pe/noticias/wp-content/uploads/2018/03/10-trucos-para-saber-c%C3%B3mo-tomar-fotos-profesionales-con-el-celular-portada-1280x720.jpg")
-                .titulo("cosas 3")
+                .titulo("Post 3")
                 .build();
 
         postRepository.saveAll(List.of(post, post2, post3));

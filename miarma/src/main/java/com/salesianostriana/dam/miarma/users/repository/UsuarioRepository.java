@@ -2,10 +2,12 @@ package com.salesianostriana.dam.miarma.users.repository;
 
 import com.salesianostriana.dam.miarma.model.Post;
 import com.salesianostriana.dam.miarma.users.model.Usuario;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -22,5 +24,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, UUID> {
 
     @Query("select u.publicaciones from Usuario u where u= ?1")
     List<Post> publicacionesUsuario2(Usuario usuario);
+
+    Page<Usuario> findAllByIdAdmin(Boolean admin, Pageable pageable);
 
 }

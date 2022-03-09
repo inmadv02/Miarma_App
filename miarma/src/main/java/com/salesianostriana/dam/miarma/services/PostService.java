@@ -161,9 +161,9 @@ public class PostService extends BaseService<Post, Long, PostRepository> {
 
     }
 
-    public void deletePosts(Long id, Usuario usuario){
+    public void deletePosts(Long id){
 
-        usuario = usuarioRepository.findFirstByNickname(usuario.getNickname()).get();
+
         Optional<Post> postAEliminar = postRepository.findById(id);
 
         if(postAEliminar.isPresent()) {
@@ -214,10 +214,7 @@ public class PostService extends BaseService<Post, Long, PostRepository> {
 
     }
 
-    public Page<Post> findAll(Pageable pageable, Usuario usuario){
-
-        usuario = usuarioRepository.findFirstByNickname(usuario.getNickname()).get();
-
+    public Page<Post> findAllPosts(Pageable pageable){
         return postRepository.findAll(pageable);
     }
 
